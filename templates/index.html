@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Hub | Smart Resource Allocation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="top-bar">
+        <div class="logo-section">
+            <div class="emblem">NG</div>
+            <div class="org-title">
+                <div class="org-title-en">Social Welfare Department</div>
+                <div class="org-title-hi">Apale Sarkar</div>
+                <div class="org-title-main">NGO Hub</div>
+            </div>
+            <div class="tagline">Data-driven volunteer coordination for social impact</div>
+        </div>
+    </div>
+
+    <div class="header-nav">
+        <button class="nav-item active" data-tab="problem">The Problem</button>
+        <button class="nav-item" data-tab="solution">Our Solution</button>
+        <button class="nav-item" data-tab="aggregate">Aggregate Data</button>
+        <button class="nav-item" data-tab="heatmap">View Heatmap</button>
+        <button class="nav-item" data-tab="allocate">Smart Allocation</button>
+        <button class="nav-item" data-tab="impact">Track Impact</button>
+    </div>
+
+    <div class="main-container">
+        <aside class="left-sidebar">
+            <div class="sidebar-box">
+                <div class="sidebar-header">The Challenge</div>
+                <div class="sidebar-content">
+                    <div class="problem-box">
+                        <div class="problem-title">Data scattered</div>
+                        <div class="problem-text">Paper surveys, sheets, and field notes live in separate places with no shared view.</div>
+                    </div>
+                    <div class="problem-box">
+                        <div class="problem-title">No visibility</div>
+                        <div class="problem-text">Coordinators cannot quickly see which districts need people and supplies most.</div>
+                    </div>
+                    <div class="problem-box">
+                        <div class="problem-title">Poor allocation</div>
+                        <div class="problem-text">Teams get deployed late or unevenly, and impact is hard to measure.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-box">
+                <div class="sidebar-header">UI Synthesis</div>
+                <div class="sidebar-content">
+                    <div class="solution-box">
+                        <div class="solution-title">SRAS strengths</div>
+                        <div class="solution-text">Action-oriented flows like field reports, donations, and deployment updates.</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-title">NGO UI strengths</div>
+                        <div class="solution-text">Cleaner storytelling, friendlier colors, and easier presentation for the challenge.</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-title">What changed</div>
+                        <div class="solution-text">This Flask version keeps your NGO look while making the SRAS-style actions real.</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="center-content">
+            <div class="alert-banner">
+                <strong>Goal:</strong> turn scattered community information into one live planning view for volunteer deployment and resource coordination.
+            </div>
+
+            <div class="tabs-container">
+                <button class="tab active" data-tab="problem">Problem</button>
+                <button class="tab" data-tab="solution">Solution</button>
+                <button class="tab" data-tab="aggregate">Aggregate</button>
+                <button class="tab" data-tab="heatmap">Heatmap</button>
+                <button class="tab" data-tab="allocate">Allocate</button>
+                <button class="tab" data-tab="impact">Impact</button>
+            </div>
+
+            <section id="problem" class="tab-content active">
+                <div class="content-header">
+                    <h2>The Core Problem</h2>
+                    <p>Why NGOs struggle with resource allocation</p>
+                </div>
+
+                <div class="panel-body">
+                    <div class="problem-flow">
+                        <div class="problem-item">
+                            <div class="problem-item-title">Collect</div>
+                            <div class="problem-item-desc">Field workers gather community needs across different formats.</div>
+                        </div>
+                        <div class="arrow-box">to</div>
+                        <div class="problem-item">
+                            <div class="problem-item-title">Fragment</div>
+                            <div class="problem-item-desc">Information gets trapped in sheets, messages, and isolated reports.</div>
+                        </div>
+                        <div class="arrow-box">to</div>
+                        <div class="problem-item">
+                            <div class="problem-item-title">Delay</div>
+                            <div class="problem-item-desc">Leaders make deployment calls without a live district-wide picture.</div>
+                        </div>
+                    </div>
+
+                    <div class="compare-grid">
+                        <div class="compare-card danger">
+                            <h3>What SRAS already did well</h3>
+                            <p>It felt operational. Reports, donations, and command actions were easy to imagine in a live control room.</p>
+                        </div>
+                        <div class="compare-card success">
+                            <h3>What your NGO UI did better</h3>
+                            <p>It explains the problem, solution, and impact more clearly, which makes it stronger for demos and judging.</p>
+                        </div>
+                    </div>
+
+                    <div class="note-card warning">
+                        <strong>Result:</strong> this version keeps the NGO presentation style but adds the SRAS-style backend actions so the interface is not static anymore.
+                    </div>
+                </div>
+            </section>
+
+            <section id="solution" class="tab-content">
+                <div class="content-header">
+                    <h2>Solution Framework</h2>
+                    <p>How the new Flask-backed version works</p>
+                </div>
+
+                <div class="panel-body">
+                    <div class="solution-flow">
+                        <div class="solution-item">
+                            <div class="solution-item-title">Consolidate</div>
+                            <div class="solution-item-desc">Bring every data stream into one database-ready data layer managed by Flask.</div>
+                        </div>
+                        <div class="arrow-box positive">to</div>
+                        <div class="solution-item">
+                            <div class="solution-item-title">Visualize</div>
+                            <div class="solution-item-desc">Render the source mix, hotspot scores, and allocation gaps from the backend.</div>
+                        </div>
+                        <div class="arrow-box positive">to</div>
+                        <div class="solution-item">
+                            <div class="solution-item-title">Act</div>
+                            <div class="solution-item-desc">Log reports, donations, deployments, and new source batches from the UI.</div>
+                        </div>
+                        <div class="arrow-box positive">to</div>
+                        <div class="solution-item">
+                            <div class="solution-item-title">Measure</div>
+                            <div class="solution-item-desc">Refresh impact metrics and recent activity after every action.</div>
+                        </div>
+                    </div>
+
+                    <div class="feature-list-card">
+                        <div class="feature-pill">Flask routing</div>
+                        <div class="feature-pill">Supabase-ready storage</div>
+                        <div class="feature-pill">Live dashboard API</div>
+                        <div class="feature-pill">Field report form</div>
+                        <div class="feature-pill">Donation logging</div>
+                        <div class="feature-pill">Volunteer deployment updates</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="aggregate" class="tab-content">
+                <div class="content-header">
+                    <h2>Step 1: Aggregate Data</h2>
+                    <p>Consolidate scattered community inputs</p>
+                </div>
+
+                <div class="panel-body">
+                    <div class="section-toolbar">
+                        <div class="toolbar-text">Each card below is backed by the Flask data layer.</div>
+                        <button class="primary-btn" data-modal-target="source">Add Data Batch</button>
+                    </div>
+                    <div id="sourceGrid" class="data-source-grid"></div>
+                    <div id="recordsSummary" class="summary-banner"></div>
+                </div>
+            </section>
+
+            <section id="heatmap" class="tab-content">
+                <div class="content-header">
+                    <h2>Step 2: District Heatmap View</h2>
+                    <p>See where need intensity is highest</p>
+                </div>
+
+                <div class="panel-body">
+                    <div class="legend-row">
+                        <div class="legend-item"><span class="legend-swatch critical"></span> Critical</div>
+                        <div class="legend-item"><span class="legend-swatch high"></span> High</div>
+                        <div class="legend-item"><span class="legend-swatch medium"></span> Medium</div>
+                        <div class="legend-item"><span class="legend-swatch low"></span> Emerging</div>
+                    </div>
+                    <div id="heatmapGrid" class="heatmap-showcase"></div>
+                    <div id="heatmapInsights" class="note-card success"></div>
+                </div>
+            </section>
+
+            <section id="allocate" class="tab-content">
+                <div class="content-header">
+                    <h2>Step 3: Smart Volunteer Allocation</h2>
+                    <p>Deploy people using live district deficits</p>
+                </div>
+
+                <div class="panel-body">
+                    <div class="section-toolbar">
+                        <div class="toolbar-text">Recommendations update whenever a report, donation, or deployment is submitted.</div>
+                        <button class="primary-btn" data-modal-target="deployment">Deploy Volunteers</button>
+                    </div>
+                    <table class="allocation-table">
+                        <thead>
+                            <tr>
+                                <th>Region</th>
+                                <th>Needs</th>
+                                <th>Current Volunteers</th>
+                                <th>Deficit</th>
+                                <th>Recommended Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allocationTableBody"></tbody>
+                    </table>
+                    <div id="allocationRecommendation" class="summary-banner muted"></div>
+                </div>
+            </section>
+
+            <section id="impact" class="tab-content">
+                <div class="content-header">
+                    <h2>Step 4: Track Impact</h2>
+                    <p>Measure outcomes after actions are logged</p>
+                </div>
+
+                <div class="panel-body">
+                    <div class="section-toolbar">
+                        <div class="toolbar-text">These actions bring the best SRAS features into your preferred NGO interface.</div>
+                        <div class="button-cluster">
+                            <button class="primary-btn" data-modal-target="report">Log Field Report</button>
+                            <button class="secondary-btn" data-modal-target="donation">Register Donation</button>
+                        </div>
+                    </div>
+
+                    <div class="impact-story">
+                        <div class="impact-card before">
+                            <h3>Before</h3>
+                            <p>Static files, weak district visibility, and random deployment decisions.</p>
+                        </div>
+                        <div class="impact-card after">
+                            <h3>After</h3>
+                            <p>One Flask-backed control surface that keeps coordination, reporting, and deployment in sync.</p>
+                        </div>
+                    </div>
+
+                    <table class="allocation-table compact">
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Before</th>
+                                <th>Now</th>
+                                <th>Change</th>
+                            </tr>
+                        </thead>
+                        <tbody id="impactTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <aside class="right-sidebar">
+            <div class="right-box">
+                <div class="right-header">Current Status</div>
+                <div id="statusList" class="right-content"></div>
+            </div>
+
+            <div class="right-box">
+                <div class="right-header">Operations Desk</div>
+                <div class="right-content operations-panel">
+                    <button class="operation-btn" data-modal-target="report">Field report</button>
+                    <button class="operation-btn" data-modal-target="donation">Donation</button>
+                    <button class="operation-btn" data-modal-target="deployment">Deployment</button>
+                    <button class="operation-btn" data-modal-target="source">Data batch</button>
+                    <div id="flashMessage" class="flash-message hidden"></div>
+                </div>
+            </div>
+
+            <div class="right-box">
+                <div class="right-header">Recent Activity</div>
+                <div id="activityFeed" class="right-content activity-feed"></div>
+            </div>
+
+            <div class="right-box">
+                <div class="right-header">Solution Benefits</div>
+                <div id="benefitsList" class="right-content"></div>
+            </div>
+        </aside>
+    </div>
+
+    <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <h3 id="modalTitle">Action</h3>
+                    <p id="modalSubtitle">Submit an update to the shared dashboard.</p>
+                </div>
+                <button id="closeModalBtn" class="close-btn" type="button">Close</button>
+            </div>
+
+            <form id="reportForm" class="modal-form hidden" data-endpoint="/api/reports">
+                <label>Region</label>
+                <select name="region" class="region-select" required></select>
+                <label>Category</label>
+                <select name="category" required>
+                    <option value="Food and Rations">Food and Rations</option>
+                    <option value="Medical Aid">Medical Aid</option>
+                    <option value="Emergency Shelter">Emergency Shelter</option>
+                    <option value="Water Supply">Water Supply</option>
+                </select>
+                <label>Priority</label>
+                <select name="priority" required>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                <label>People affected</label>
+                <input type="number" name="people_affected" min="1" value="50" required>
+                <label>Description</label>
+                <textarea name="description" rows="4" placeholder="Describe what is happening on the ground." required></textarea>
+                <button class="submit-btn" type="submit">Save report</button>
+            </form>
+
+            <form id="donationForm" class="modal-form hidden" data-endpoint="/api/donations">
+                <label>Donor name</label>
+                <input type="text" name="donor_name" placeholder="Enter donor or organization name" required>
+                <label>Region</label>
+                <select name="region" class="region-select" required></select>
+                <label>Category</label>
+                <select name="category" required>
+                    <option value="Money">Money</option>
+                    <option value="Food">Food</option>
+                    <option value="Medical">Medical</option>
+                    <option value="Shelter">Shelter</option>
+                </select>
+                <label>Quantity</label>
+                <input type="number" name="quantity" min="1" value="25" required>
+                <label>Notes</label>
+                <textarea name="notes" rows="3" placeholder="Optional details for the contribution."></textarea>
+                <button class="submit-btn" type="submit">Register donation</button>
+            </form>
+
+            <form id="deploymentForm" class="modal-form hidden" data-endpoint="/api/deployments">
+                <label>Region</label>
+                <select name="region" class="region-select" required></select>
+                <label>Volunteers</label>
+                <input type="number" name="volunteers" min="1" value="20" required>
+                <label>Deployment note</label>
+                <textarea name="note" rows="3" placeholder="Add a short deployment note."></textarea>
+                <button class="submit-btn" type="submit">Update deployment</button>
+            </form>
+
+            <form id="sourceForm" class="modal-form hidden" data-endpoint="/api/sources">
+                <label>Source name</label>
+                <input type="text" name="name" placeholder="Example: Ward camp spreadsheet" required>
+                <label>Record count</label>
+                <input type="number" name="records" min="1" value="100" required>
+                <label>Description</label>
+                <textarea name="description" rows="3" placeholder="How this source was collected and why it matters."></textarea>
+                <button class="submit-btn" type="submit">Add source</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="{{ url_for('static', filename='js/india_map.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

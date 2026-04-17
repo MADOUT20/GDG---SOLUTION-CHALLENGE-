@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Resource Allocation - NGO Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            background: white;
+            border-bottom: 3px solid #ff9800;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .emblem {
+            width: 50px;
+            height: 50px;
+            background: #003d6b;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: gold;
+            font-weight: bold;
+            font-size: 28px;
+        }
+
+        .org-title {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .org-title-en {
+            font-size: 11px;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .org-title-hi {
+            font-size: 16px;
+            color: #003d6b;
+            font-weight: bold;
+        }
+
+        .org-title-main {
+            font-size: 22px;
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .tagline {
+            color: #d32f2f;
+            font-size: 11px;
+            font-weight: bold;
+            margin-left: 20px;
+            padding-left: 20px;
+            border-left: 2px solid #ff9800;
+        }
+
+        /* Header Navigation */
+        .header-nav {
+            background: #003d6b;
+            color: white;
+            padding: 0;
+            display: flex;
+            align-items: stretch;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            overflow-x: auto;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            border-right: 1px solid #004080;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-item:hover {
+            background: #004080;
+        }
+
+        .nav-item.active {
+            background: #ff9800;
+            color: white;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: grid;
+            grid-template-columns: 190px minmax(0, 1fr) 220px;
+            gap: 0;
+            max-width: 1520px;
+            margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Left Sidebar */
+        .left-sidebar {
+            background: white;
+            border-right: 1px solid #ddd;
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-box {
+            border: 1px solid #ddd;
+            margin: 10px;
+            background: white;
+        }
+
+        .sidebar-header {
+            background: #ff9800;
+            color: white;
+            padding: 10px 12px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .sidebar-content {
+            padding: 10px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .problem-box {
+            background: #fff3cd;
+            border-left: 4px solid #ff9800;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .problem-title {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .problem-text {
+            color: #666;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .solution-box {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 3px;
+        }
+
+        .solution-title {
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .solution-text {
+            color: #2e7d32;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .step-list {
+            list-style: none;
+        }
+
+        .step-list li {
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 12px;
+        }
+
+        .step-list li:before {
+            content: "→ ";
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        /* Center Content */
+        .center-content {
+            background: white;
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        .alert-banner {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-left: 4px solid #d32f2f;
+            padding: 12px 15px;
+            margin: 10px;
+            font-size: 12px;
+            color: #856404;
+        }
+
+        .alert-banner strong {
+            color: #d32f2f;
+        }
+
+        .content-header {
+            background: white;
+            border-bottom: 2px solid #ff9800;
+            padding: 15px 20px;
+            margin: 10px;
+            margin-bottom: 0;
+        }
+
+        .content-header h2 {
+            color: #ff9800;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .content-header p {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            border-bottom: 1px solid #ddd;
+            margin: 10px;
+            display: flex;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 16px;
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            color: #333;
+            margin-right: -1px;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            background: #fff;
+        }
+
+        .tab.active {
+            background: white;
+            border-top: 3px solid #ff9800;
+            color: #ff9800;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Problem Visualization */
+        .problem-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .problem-item {
+            background: #ffebee;
+            border: 2px solid #d32f2f;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .problem-item-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .problem-item-title {
+            color: #d32f2f;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .problem-item-desc {
+            color: #666;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .arrow-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ff9800;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* Solution Visualization */
+        .solution-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .solution-item {
+            background: #e8f5e9;
+            border: 2px solid #4caf50;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .solution-item-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .solution-item-title {
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .solution-item-desc {
+            color: #2e7d32;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* Data Sources */
+        .data-source-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .data-source {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-left: 4px solid #ff9800;
+            padding: 12px;
+            border-radius: 3px;
+        }
+
+        .data-source-label {
+            color: #003d6b;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .data-source-desc {
+            color: #666;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .data-source-count {
+            background: #ff9800;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        /* Heatmap Command Center */
+        .heat-legend {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 12px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .heat-legend-title {
+            color: #856404;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .heat-legend-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 18px;
+        }
+
+        .heat-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .heat-swatch {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+        }
+
+        .heat-swatch.critical {
+            background: #d32f2f;
+        }
+
+        .heat-swatch.high {
+            background: #ff9800;
+        }
+
+        .heat-swatch.medium {
+            background: #ffc107;
+        }
+
+        .heat-swatch.low {
+            background: #4caf50;
+        }
+
+        .heatmap-command-board {
+            background: linear-gradient(180deg, #fffdf8 0%, #f4f9ff 100%);
+            border: 1px solid #c6dff4;
+            border-radius: 18px;
+            padding: 14px;
+            box-shadow: 0 16px 36px rgba(0, 61, 107, 0.12);
+        }
+
+        .heatmap-command-strip {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .command-chip {
+            background: #003d6b;
+            border: 1px solid #004a81;
+            color: white;
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .signal-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff623d;
+            box-shadow: 0 0 10px #ff623d;
+            animation: signalPulse 1.6s infinite;
+        }
+
+        .heatmap-command-layout {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .heatmap-map-panel {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            background: linear-gradient(180deg, #fffefb 0%, #eef5ff 100%);
+            border: 1px solid #c7ddf0;
+        }
+
+        .heatmap-map-panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(255, 152, 0, 0.12), transparent 28%),
+                radial-gradient(circle at 80% 74%, rgba(0, 61, 107, 0.08), transparent 24%),
+                linear-gradient(rgba(0, 61, 107, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 61, 107, 0.04) 1px, transparent 1px);
+            background-size: auto, auto, 48px 48px, 48px 48px;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .map-live-box,
+        .map-mode-chip {
+            position: absolute;
+            top: 18px;
+            z-index: 6;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #c7ddf0;
+            color: #003d6b;
+            border-radius: 12px;
+            padding: 9px 12px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(0, 61, 107, 0.1);
+        }
+
+        .map-live-box {
+            left: 18px;
+        }
+
+        .map-mode-chip {
+            right: 18px;
+            color: #ff9800;
+        }
+
+        .heatmap-toolbar {
+            position: absolute;
+            right: 18px;
+            top: 64px;
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid #c7ddf0;
+            border-radius: 14px;
+            padding: 8px 10px;
+            box-shadow: 0 8px 20px rgba(0, 61, 107, 0.1);
+        }
+
+        .zoom-controls {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .zoom-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #9bc2e2;
+            border-radius: 9px;
+            background: white;
+            color: #003d6b;
+            font-size: 18px;
+            line-height: 1;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .zoom-btn:hover {
+            background: #003d6b;
+            color: white;
+            border-color: #003d6b;
+        }
+
+        .zoom-level {
+            color: #003d6b;
+            font-size: 11px;
+            font-weight: bold;
+            min-width: 44px;
+            text-align: center;
+        }
+
+        .map-hint {
+            color: #6f7f90;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .map-viewport {
+            position: relative;
+            height: 680px;
+            overflow: hidden;
+            border-radius: 14px;
+            margin: 90px 12px 12px;
+            background:
+                linear-gradient(180deg, rgba(255, 247, 226, 0.95) 0%, rgba(231, 243, 255, 0.95) 100%);
+            border: 1px solid #d5e4f2;
+            cursor: grab;
+        }
+
+        .map-viewport.dragging {
+            cursor: grabbing;
+        }
+
+        .map-stage {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 1500px;
+            height: 820px;
+            transform-origin: 0 0;
+            will-change: transform;
+            user-select: none;
+            touch-action: none;
+        }
+
+        .state-map {
+            position: absolute;
+            left: 34px;
+            top: 22px;
+            width: 1432px;
+            height: 760px;
+            z-index: 2;
+        }
+
+        .state-map .state-fill {
+            fill: #fffef9;
+            stroke: #7c6c5b;
+            stroke-width: 2.6;
+            filter: drop-shadow(0 12px 16px rgba(72, 88, 113, 0.16));
+        }
+
+        .state-map .state-grid {
+            fill: none;
+            stroke: rgba(106, 143, 178, 0.32);
+            stroke-width: 1.2;
+        }
+
+        .state-map .state-region {
+            stroke: #a38e79;
+            stroke-width: 2;
+        }
+
+        .state-map .region-north {
+            fill: #d9d0ed;
+        }
+
+        .state-map .region-northwest {
+            fill: #edd8ae;
+        }
+
+        .state-map .region-west {
+            fill: #cde9b1;
+        }
+
+        .state-map .region-central {
+            fill: #ddf0bf;
+        }
+
+        .state-map .region-east {
+            fill: #c5e8c0;
+        }
+
+        .state-map .region-southwest {
+            fill: #efd7c4;
+        }
+
+        .state-map .region-south {
+            fill: #d4efc1;
+        }
+
+        .state-map .region-southeast {
+            fill: #dff2c4;
+        }
+
+        .state-map .region-northeast {
+            fill: #d7d4ef;
+        }
+
+        .state-map .region-ocean {
+            fill: rgba(119, 193, 236, 0.18);
+            stroke: rgba(78, 143, 191, 0.18);
+            stroke-width: 2;
+        }
+
+        .state-map .state-highlight {
+            fill: rgba(255, 181, 76, 0.34);
+            stroke: #ff9800;
+            stroke-width: 3;
+        }
+
+        .state-map .state-label {
+            fill: #5c4a36;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 0.8px;
+        }
+
+        .state-map .map-caption {
+            fill: #776754;
+            font-size: 12px;
+            letter-spacing: 2px;
+        }
+
+        .state-map .sea-label {
+            fill: #4f90bf;
+            font-size: 20px;
+            letter-spacing: 5px;
+        }
+
+        .state-map .water-line {
+            fill: none;
+            stroke: rgba(79, 144, 191, 0.35);
+            stroke-width: 2;
+        }
+
+        .heat-zone {
+            position: absolute;
+            z-index: 3;
+            border-radius: 50%;
+            filter: blur(10px);
+            mix-blend-mode: multiply;
+            pointer-events: none;
+            animation: heatShift 6s ease-in-out infinite;
+        }
+
+        .zone-critical {
+            background: radial-gradient(circle at center,
+                rgba(255, 76, 38, 0.96) 0 16%,
+                rgba(255, 154, 41, 0.92) 22%,
+                rgba(255, 222, 91, 0.82) 40%,
+                rgba(114, 255, 127, 0.46) 60%,
+                rgba(48, 193, 255, 0.18) 80%,
+                rgba(48, 193, 255, 0) 100%);
+        }
+
+        .zone-high {
+            background: radial-gradient(circle at center,
+                rgba(255, 145, 30, 0.9) 0 18%,
+                rgba(255, 186, 59, 0.82) 30%,
+                rgba(255, 232, 104, 0.72) 48%,
+                rgba(117, 255, 138, 0.36) 68%,
+                rgba(48, 193, 255, 0) 100%);
+        }
+
+        .zone-medium {
+            background: radial-gradient(circle at center,
+                rgba(255, 200, 40, 0.78) 0 18%,
+                rgba(255, 229, 96, 0.72) 32%,
+                rgba(154, 255, 121, 0.46) 56%,
+                rgba(48, 193, 255, 0.12) 78%,
+                rgba(48, 193, 255, 0) 100%);
+        }
+
+        .zone-low {
+            background: radial-gradient(circle at center,
+                rgba(91, 214, 90, 0.74) 0 24%,
+                rgba(148, 236, 91, 0.5) 42%,
+                rgba(98, 255, 166, 0.24) 64%,
+                rgba(48, 193, 255, 0.1) 82%,
+                rgba(48, 193, 255, 0) 100%);
+        }
+
+        .zone-mumbai {
+            width: 220px;
+            height: 220px;
+            left: 992px;
+            top: 354px;
+        }
+
+        .zone-thane {
+            width: 170px;
+            height: 170px;
+            left: 1018px;
+            top: 334px;
+            animation-delay: 0.8s;
+        }
+
+        .zone-pune {
+            width: 190px;
+            height: 190px;
+            left: 1012px;
+            top: 400px;
+            animation-delay: 1.3s;
+        }
+
+        .zone-nashik {
+            width: 150px;
+            height: 150px;
+            left: 986px;
+            top: 314px;
+            animation-delay: 0.5s;
+        }
+
+        .zone-aurangabad {
+            width: 150px;
+            height: 150px;
+            left: 1056px;
+            top: 348px;
+            animation-delay: 1.7s;
+        }
+
+        .zone-nagpur {
+            width: 210px;
+            height: 210px;
+            left: 1098px;
+            top: 344px;
+            animation-delay: 0.9s;
+        }
+
+        .map-marker {
+            position: absolute;
+            z-index: 5;
+            transform: translate(-50%, -50%);
+        }
+
+        .map-marker-button {
+            position: relative;
+            border: none;
+            background: none;
+            padding: 0;
+            cursor: pointer;
+            outline: none;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-marker-button:focus-visible .map-pin {
+            box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.22);
+        }
+
+        .map-pin {
+            position: relative;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.95);
+            flex-shrink: 0;
+            box-shadow: 0 8px 14px rgba(0, 0, 0, 0.14);
+        }
+
+        .map-pin::before,
+        .map-pin::after {
+            content: "";
+            position: absolute;
+            inset: -7px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            opacity: 0;
+            animation: markerRipple 2.1s ease-out infinite;
+        }
+
+        .map-pin::after {
+            inset: -13px;
+            border-width: 1px;
+            animation-delay: 0.55s;
+        }
+
+        .map-pin.critical {
+            background: #ef4444;
+            color: #ef4444;
+        }
+
+        .map-pin.high {
+            background: #f59e0b;
+            color: #f59e0b;
+        }
+
+        .map-pin.medium {
+            background: #facc15;
+            color: #facc15;
+        }
+
+        .map-pin.low {
+            background: #22c55e;
+            color: #22c55e;
+        }
+
+        .map-floating-tooltip {
+            position: absolute;
+            min-width: 168px;
+            max-width: 220px;
+            padding: 9px 11px;
+            background: rgba(255, 255, 255, 0.96);
+            border: 1px solid #c2d9ee;
+            border-radius: 14px;
+            box-shadow: 0 14px 26px rgba(0, 61, 107, 0.16);
+            transition: opacity 0.2s, transform 0.2s;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(8px);
+            z-index: 12;
+        }
+
+        .map-floating-tooltip.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .map-floating-tooltip.tooltip-tight {
+            max-width: 156px;
+        }
+
+        .map-floating-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: var(--arrow-left, 22px);
+            margin-left: -7px;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-right: 1px solid #c2d9ee;
+            border-bottom: 1px solid #c2d9ee;
+            transform: rotate(45deg);
+        }
+
+        .map-floating-tooltip[data-placement="bottom"]::after {
+            top: -8px;
+            border-right: none;
+            border-bottom: none;
+            border-left: 1px solid #c2d9ee;
+            border-top: 1px solid #c2d9ee;
+        }
+
+        .map-floating-tooltip strong {
+            display: block;
+            color: #003d6b;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .marker-issue {
+            display: block;
+            color: #4d6780;
+            font-size: 11px;
+            line-height: 1.35;
+        }
+
+        .marker-meta {
+            display: block;
+            margin-top: 6px;
+            color: #ff9800;
+            font-size: 10px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .marker-mumbai {
+            left: 1050px;
+            top: 438px;
+        }
+
+        .marker-thane {
+            left: 1072px;
+            top: 394px;
+        }
+
+        .marker-pune {
+            left: 1066px;
+            top: 486px;
+        }
+
+        .marker-nashik {
+            left: 1046px;
+            top: 372px;
+        }
+
+        .marker-aurangabad {
+            left: 1108px;
+            top: 422px;
+        }
+
+        .marker-nagpur {
+            left: 1164px;
+            top: 428px;
+        }
+
+        .heatmap-intel-panel {
+            background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+            border: 1px solid #d4e3f1;
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .intel-panel-title {
+            color: #003d6b;
+            font-weight: bold;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .intel-panel-subtitle {
+            color: #5c7084;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .intel-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .intel-stat {
+            background: #f9fcff;
+            border: 1px solid #d5e4f2;
+            border-radius: 12px;
+            padding: 10px;
+        }
+
+        .intel-stat span {
+            display: block;
+            color: #6c7e90;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .intel-stat strong {
+            color: #003d6b;
+            font-size: 18px;
+        }
+
+        .district-intel-card {
+            background: #ffffff;
+            border: 1px solid #d6e3ef;
+            border-left-width: 4px;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .district-intel-card.critical {
+            border-left-color: #ef4444;
+        }
+
+        .district-intel-card.high {
+            border-left-color: #f59e0b;
+        }
+
+        .district-intel-card.medium {
+            border-left-color: #facc15;
+        }
+
+        .district-intel-card.low {
+            border-left-color: #22c55e;
+        }
+
+        .district-intel-card h3 {
+            color: #003d6b;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .district-intel-card p {
+            color: #5d6f80;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .district-intel-meta {
+            color: #ff9800;
+            font-size: 10px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            margin-top: 8px;
+        }
+
+        .heatmap-brief {
+            background: #eaf5ff;
+            border: 1px solid #8bc4ff;
+            border-left: 4px solid #1d8fff;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+
+        .heatmap-brief-title {
+            color: #003d6b;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .heatmap-brief ul {
+            font-size: 12px;
+            color: #26445f;
+            margin-left: 20px;
+            line-height: 1.7;
+        }
+
+        @keyframes signalPulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            70% {
+                transform: scale(1.45);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.45);
+                opacity: 0;
+            }
+        }
+
+        @keyframes markerRipple {
+            0% {
+                transform: scale(0.7);
+                opacity: 0.7;
+            }
+            75% {
+                transform: scale(1.9);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1.95);
+                opacity: 0;
+            }
+        }
+
+        @keyframes heatShift {
+            0%, 100% {
+                transform: scale(1) translate3d(0, 0, 0);
+            }
+            50% {
+                transform: scale(1.04) translate3d(6px, -4px, 0);
+            }
+        }
+
+        /* Allocation Table */
+        .allocation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .allocation-table th {
+            background: #003d6b;
+            color: white;
+            padding: 10px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .allocation-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            font-size: 12px;
+        }
+
+        .allocation-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .allocation-table .critical {
+            color: #d32f2f;
+            font-weight: bold;
+        }
+
+        .allocation-table .optimal {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            background: white;
+            padding: 10px;
+            border-left: 1px solid #ddd;
+            overflow-y: auto;
+        }
+
+        .right-box {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .right-header {
+            background: #003d6b;
+            color: white;
+            padding: 10px 12px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .right-content {
+            padding: 10px;
+            font-size: 11px;
+        }
+
+        .stat-right {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .stat-right:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label-right {
+            color: #666;
+        }
+
+        .stat-value-right {
+            color: #ff9800;
+            font-weight: bold;
+        }
+
+        .impact-badge {
+            background: #e8f5e9;
+            border-left: 3px solid #4caf50;
+            padding: 8px;
+            margin-top: 10px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 180px 1fr 240px;
+            }
+
+            .heatmap-command-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .left-sidebar, .right-sidebar {
+                display: none;
+            }
+
+            .heatmap-map-panel,
+            .map-viewport {
+                min-height: 700px;
+            }
+
+            .map-live-box,
+            .map-mode-chip {
+                font-size: 10px;
+                padding: 8px 10px;
+            }
+
+            .heatmap-toolbar {
+                left: 18px;
+                right: auto;
+                top: 60px;
+                flex-wrap: wrap;
+            }
+
+            .map-mode-chip {
+                top: 102px;
+                right: 18px;
+            }
+
+            .map-viewport {
+                margin-top: 142px;
+                height: 620px;
+            }
+
+            .map-floating-tooltip {
+                min-width: 126px;
+                max-width: 150px;
+                padding: 8px 9px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="logo-section">
+            <div class="emblem">🏛️</div>
+            <div class="org-title">
+                <div class="org-title-en">Social Welfare Department</div>
+                <div class="org-title-hi">आपले सरकार</div>
+                <div class="org-title-main">NGO Hub</div>
+            </div>
+            <div class="tagline">💡 Data-Driven Volunteer Coordination</div>
+        </div>
+    </div>
+
+    <!-- Header Navigation -->
+    <div class="header-nav">
+        <div class="nav-item active" onclick="switchTab('problem')">⚠️ The Problem</div>
+        <div class="nav-item" onclick="switchTab('solution')">✓ Our Solution</div>
+        <div class="nav-item" onclick="switchTab('aggregate')">📤 Aggregate Data</div>
+        <div class="nav-item" onclick="switchTab('heatmap')">🗺️ View Heatmap</div>
+        <div class="nav-item" onclick="switchTab('allocate')">📊 Smart Allocation</div>
+        <div class="nav-item" onclick="switchTab('impact')">🎯 Track Impact</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar -->
+        <div class="left-sidebar">
+            <div class="sidebar-box">
+                <div class="sidebar-header">⚠️ THE CHALLENGE</div>
+                <div class="sidebar-content">
+                    <div class="problem-box">
+                        <div class="problem-title">Data Scattered</div>
+                        <div class="problem-text">Paper surveys, field reports, spreadsheets - information spread across different places</div>
+                    </div>
+                    <div class="problem-box">
+                        <div class="problem-title">No Visibility</div>
+                        <div class="problem-text">Can't see where biggest needs actually are</div>
+                    </div>
+                    <div class="problem-box">
+                        <div class="problem-title">Poor Allocation</div>
+                        <div class="problem-text">Volunteers deployed randomly, not where most needed</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-box">
+                <div class="sidebar-header">✓ OUR SOLUTION</div>
+                <div class="sidebar-content">
+                    <div class="solution-box">
+                        <div class="solution-title">1. Consolidate</div>
+                        <div class="solution-text">Upload all data from different sources</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-title">2. Visualize</div>
+                        <div class="solution-text">See hotspots on interactive heatmap</div>
+                    </div>
+                    <div class="solution-box">
+                        <div class="solution-title">3. Optimize</div>
+                        <div class="solution-text">Deploy volunteers smartly based on needs</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Content -->
+        <div class="center-content">
+            <div class="alert-banner">
+                📊 <strong>GOAL:</strong> Transform scattered community data into actionable insights for better volunteer coordination and resource allocation
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <div class="tab active" onclick="switchTab('problem')">⚠️ Problem</div>
+                <div class="tab" onclick="switchTab('solution')">✓ Solution</div>
+                <div class="tab" onclick="switchTab('aggregate')">📤 Aggregate</div>
+                <div class="tab" onclick="switchTab('heatmap')">🗺️ Heatmap</div>
+                <div class="tab" onclick="switchTab('allocate')">📊 Allocate</div>
+                <div class="tab" onclick="switchTab('impact')">🎯 Impact</div>
+            </div>
+
+            <!-- Problem Tab -->
+            <div id="problem" class="tab-content active">
+                <div class="content-header">
+                    <h2>⚠️ The Core Problem</h2>
+                    <p>Why NGOs struggle with resource allocation</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div class="problem-flow">
+                        <div class="problem-item">
+                            <div class="problem-item-icon">📋</div>
+                            <div class="problem-item-title">Paper Surveys</div>
+                            <div class="problem-item-desc">Field workers collect data on paper forms</div>
+                        </div>
+                        <div class="arrow-box">→</div>
+                        <div class="problem-item">
+                            <div class="problem-item-icon">📊</div>
+                            <div class="problem-item-title">Scattered Files</div>
+                            <div class="problem-item-desc">Stored in different spreadsheets & folders</div>
+                        </div>
+                        <div class="arrow-box">→</div>
+                        <div class="problem-item">
+                            <div class="problem-item-icon">❌</div>
+                            <div class="problem-item-title">No Visibility</div>
+                            <div class="problem-item-desc">Can't see the big picture of community needs</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #ffebee; border-left: 4px solid #d32f2f; padding: 12px; margin-top: 20px; border-radius: 3px;">
+                        <div style="color: #d32f2f; font-weight: bold; margin-bottom: 8px;">❌ RESULT:</div>
+                        <ul style="font-size: 12px; color: #666; margin-left: 20px; line-height: 1.8;">
+                            <li>Volunteers deployed to random areas</li>
+                            <li>Some critical regions get overlooked</li>
+                            <li>Resources wasted on low-priority areas</li>
+                            <li>Can't measure real impact</li>
+                            <li>Inefficient use of limited volunteer base</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Solution Tab -->
+            <div id="solution" class="tab-content">
+                <div class="content-header">
+                    <h2>✓ Our Solution Framework</h2>
+                    <p>How we solve the data & allocation problem</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div class="solution-flow">
+                        <div class="solution-item">
+                            <div class="solution-item-icon">🔀</div>
+                            <div class="solution-item-title">CONSOLIDATE</div>
+                            <div class="solution-item-desc">Merge data from all sources into one platform</div>
+                        </div>
+                        <div class="arrow-box" style="color: #4caf50;">→</div>
+                        <div class="solution-item">
+                            <div class="solution-item-icon">🗺️</div>
+                            <div class="solution-item-title">VISUALIZE</div>
+                            <div class="solution-item-desc">Interactive heatmap shows need hotspots</div>
+                        </div>
+                        <div class="arrow-box" style="color: #4caf50;">→</div>
+                        <div class="solution-item">
+                            <div class="solution-item-icon">🎯</div>
+                            <div class="solution-item-title">ALLOCATE</div>
+                            <div class="solution-item-desc">Deploy volunteers based on actual needs</div>
+                        </div>
+                        <div class="arrow-box" style="color: #4caf50;">→</div>
+                        <div class="solution-item">
+                            <div class="solution-item-icon">📈</div>
+                            <div class="solution-item-title">MEASURE</div>
+                            <div class="solution-item-desc">Track impact & optimize continuously</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #e8f5e9; border-left: 4px solid #4caf50; padding: 12px; margin-top: 20px; border-radius: 3px;">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 8px;">✓ BENEFITS:</div>
+                        <ul style="font-size: 12px; color: #2e7d32; margin-left: 20px; line-height: 1.8;">
+                            <li><strong>Better Targeting:</strong> Focus on areas with highest needs first</li>
+                            <li><strong>Efficient Deployment:</strong> Volunteers go where they're needed most</li>
+                            <li><strong>Data-Driven:</strong> Decisions based on facts, not guesses</li>
+                            <li><strong>Measurable Impact:</strong> Track outcomes by region & category</li>
+                            <li><strong>Scalable:</strong> Add more volunteers/resources as needed</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aggregate Data Tab -->
+            <div id="aggregate" class="tab-content">
+                <div class="content-header">
+                    <h2>📤 Step 1: Aggregate Data from Multiple Sources</h2>
+                    <p>Consolidate scattered community data</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 3px;">
+                        <strong style="color: #856404;">📝 Example Sources of Community Data:</strong>
+                    </div>
+
+                    <div class="data-source-grid">
+                        <div class="data-source">
+                            <div class="data-source-label">📋 Paper Surveys</div>
+                            <div class="data-source-desc">Field workers filled during visits</div>
+                            <div class="data-source-count">452 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">📊 Excel Sheets</div>
+                            <div class="data-source-desc">Old databases with community needs</div>
+                            <div class="data-source-count">328 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">📱 Mobile App Data</div>
+                            <div class="data-source-desc">Data collected via volunteer apps</div>
+                            <div class="data-source-count">215 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">🏥 Health Center Reports</div>
+                            <div class="data-source-desc">Community health clinic data</div>
+                            <div class="data-source-count">189 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">🎓 School Data</div>
+                            <div class="data-source-desc">Education needs from schools</div>
+                            <div class="data-source-count">267 Records</div>
+                        </div>
+                        <div class="data-source">
+                            <div class="data-source-label">🏢 Government Surveys</div>
+                            <div class="data-source-desc">District level government data</div>
+                            <div class="data-source-count">156 Records</div>
+                        </div>
+                    </div>
+
+                    <div style="background: #e8f5e9; border: 1px solid #4caf50; padding: 12px; margin-top: 15px; border-radius: 3px; text-align: center;">
+                        <div style="color: #2e7d32; font-weight: bold; font-size: 14px;">✓ TOTAL DATA CONSOLIDATED</div>
+                        <div style="color: #2e7d32; font-weight: bold; font-size: 24px; margin-top: 5px;">1,607 Records</div>
+                        <div style="color: #666; font-size: 12px; margin-top: 8px;">From 6 different sources → Now in ONE platform!</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Heatmap Tab -->
+            <div id="heatmap" class="tab-content">
+                <div class="content-header">
+                    <h2>🗺️ Step 2: Visualize Needs on Interactive Heatmap</h2>
+                    <p>See where community needs are highest</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div class="heat-legend">
+                        <strong class="heat-legend-title">🎨 Color Intensity = Severity of Need</strong>
+                        <div class="heat-legend-row">
+                            <div class="heat-legend-item">
+                                <div class="heat-swatch critical"></div>
+                                <span>Critical (95-100%)</span>
+                            </div>
+                            <div class="heat-legend-item">
+                                <div class="heat-swatch high"></div>
+                                <span>High (75-94%)</span>
+                            </div>
+                            <div class="heat-legend-item">
+                                <div class="heat-swatch medium"></div>
+                                <span>Medium (50-74%)</span>
+                            </div>
+                            <div class="heat-legend-item">
+                                <div class="heat-swatch low"></div>
+                                <span>Emerging (&lt;50%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="heatmap-command-board">
+                        <div class="heatmap-command-strip">
+                            <div class="command-chip"><span class="signal-dot"></span> World heat layer with India hotspot cluster and hover-only issue cards</div>
+                        </div>
+
+                        <div class="heatmap-command-layout">
+                            <div class="heatmap-map-panel">
+                                <div class="map-live-box"><span class="signal-dot"></span> Live district heatmap</div>
+                                <div class="map-mode-chip">World view with India hotspots</div>
+
+                                <div class="heatmap-toolbar">
+                                    <div class="zoom-controls">
+                                        <button class="zoom-btn" type="button" data-map-zoom="out" aria-label="Zoom out">−</button>
+                                        <div class="zoom-level" data-map-zoom-level>100%</div>
+                                        <button class="zoom-btn" type="button" data-map-zoom="in" aria-label="Zoom in">+</button>
+                                    </div>
+                                    <button class="zoom-btn" type="button" data-map-zoom="reset" aria-label="Reset zoom">⟳</button>
+                                    <div class="map-hint">Drag or scroll to inspect</div>
+                                </div>
+
+                                <div class="map-viewport" data-map-viewport>
+                                    <div class="map-stage" data-map-stage>
+                                        <svg class="state-map" viewBox="0 0 1600 900" aria-hidden="true">
+                                            <path class="state-grid" d="M0 150H1600M0 300H1600M0 450H1600M0 600H1600M0 750H1600"></path>
+                                            <path class="state-grid" d="M200 0V900M400 0V900M600 0V900M800 0V900M1000 0V900M1200 0V900M1400 0V900"></path>
+                                            <path class="state-region region-northwest" d="M86 248L112 207L180 177L220 146L271 139L313 159L328 210L299 260L248 282L179 298L120 296L90 272Z"></path>
+                                            <path class="state-region region-central" d="M234 303L297 273L346 283L385 308L413 350L414 395L395 445L353 463L311 450L269 418L242 366Z"></path>
+                                            <path class="state-region region-west" d="M181 481L235 470L293 481L326 516L320 568L296 635L266 715L243 792L225 848L191 836L174 744L154 658L140 567L145 520Z"></path>
+                                            <path class="state-region region-southwest" d="M327 519L383 504L425 517L456 551L469 601L454 654L427 733L416 810L400 861L372 835L344 760L331 684L319 605Z"></path>
+                                            <path class="state-region region-north" d="M427 173L494 134L575 129L641 153L690 183L698 235L653 259L593 247L554 219L498 208L444 223L416 203Z"></path>
+                                            <path class="state-region region-east" d="M477 306L551 270L604 280L654 312L687 355L699 403L681 457L644 496L592 506L536 478L502 439L481 384Z"></path>
+                                            <path class="state-region region-central" d="M514 510L586 494L660 507L703 545L722 594L716 652L689 714L661 756L621 742L591 687L572 628L544 562Z"></path>
+                                            <path class="state-region region-northwest" d="M733 194L785 148L847 142L892 168L902 207L873 241L825 252L777 237L740 222Z"></path>
+                                            <path class="state-region region-west" d="M764 267L826 252L892 260L941 289L962 347L957 395L926 441L874 463L820 458L778 430L753 381L746 322Z"></path>
+                                            <path class="state-region region-southwest" d="M841 488L901 474L955 485L991 515L1006 559L997 609L969 669L942 728L912 716L879 663L856 601L834 543Z"></path>
+                                            <path class="state-region region-north" d="M930 141L996 123L1096 119L1188 141L1276 178L1355 205L1430 245L1470 292L1473 337L1437 363L1378 353L1336 319L1282 301L1232 277L1173 252L1102 236L1038 220L969 203L925 183Z"></path>
+                                            <path class="state-region region-east" d="M967 246L1055 245L1136 262L1219 294L1296 333L1342 381L1345 429L1311 470L1248 481L1197 461L1146 439L1090 435L1039 458L985 445L954 405L948 349Z"></path>
+                                            <path class="state-region region-central" d="M980 475L1058 458L1142 467L1218 492L1271 533L1275 583L1242 625L1174 652L1111 649L1064 621L1027 585L994 532Z"></path>
+                                            <path class="state-region region-west" d="M1298 520L1356 503L1410 513L1460 553L1476 602L1459 646L1421 685L1363 696L1310 679L1280 645L1274 585Z"></path>
+                                            <path class="state-region region-northeast" d="M1344 297L1395 286L1452 302L1494 334L1510 376L1503 420L1467 448L1420 448L1378 420L1343 382Z"></path>
+                                            <path class="state-region region-central" d="M1194 716L1263 698L1314 711L1350 745L1352 792L1335 829L1294 842L1248 836L1209 807L1191 768Z"></path>
+                                            <path class="state-region region-southeast" d="M1409 742L1454 724L1503 737L1531 769L1538 807L1510 834L1466 840L1426 822L1400 787Z"></path>
+                                            <path class="state-fill" d="M86 248L112 207L180 177L220 146L271 139L313 159L328 210L299 260L248 282L179 298L120 296L90 272Z"></path>
+                                            <path class="state-fill" d="M234 303L297 273L346 283L385 308L413 350L414 395L395 445L353 463L311 450L269 418L242 366Z"></path>
+                                            <path class="state-fill" d="M181 481L235 470L293 481L326 516L320 568L296 635L266 715L243 792L225 848L191 836L174 744L154 658L140 567L145 520Z"></path>
+                                            <path class="state-fill" d="M327 519L383 504L425 517L456 551L469 601L454 654L427 733L416 810L400 861L372 835L344 760L331 684L319 605Z"></path>
+                                            <path class="state-fill" d="M427 173L494 134L575 129L641 153L690 183L698 235L653 259L593 247L554 219L498 208L444 223L416 203Z"></path>
+                                            <path class="state-fill" d="M477 306L551 270L604 280L654 312L687 355L699 403L681 457L644 496L592 506L536 478L502 439L481 384Z"></path>
+                                            <path class="state-fill" d="M514 510L586 494L660 507L703 545L722 594L716 652L689 714L661 756L621 742L591 687L572 628L544 562Z"></path>
+                                            <path class="state-fill" d="M733 194L785 148L847 142L892 168L902 207L873 241L825 252L777 237L740 222Z"></path>
+                                            <path class="state-fill" d="M764 267L826 252L892 260L941 289L962 347L957 395L926 441L874 463L820 458L778 430L753 381L746 322Z"></path>
+                                            <path class="state-fill" d="M841 488L901 474L955 485L991 515L1006 559L997 609L969 669L942 728L912 716L879 663L856 601L834 543Z"></path>
+                                            <path class="state-fill" d="M930 141L996 123L1096 119L1188 141L1276 178L1355 205L1430 245L1470 292L1473 337L1437 363L1378 353L1336 319L1282 301L1232 277L1173 252L1102 236L1038 220L969 203L925 183Z"></path>
+                                            <path class="state-fill" d="M967 246L1055 245L1136 262L1219 294L1296 333L1342 381L1345 429L1311 470L1248 481L1197 461L1146 439L1090 435L1039 458L985 445L954 405L948 349Z"></path>
+                                            <path class="state-fill" d="M980 475L1058 458L1142 467L1218 492L1271 533L1275 583L1242 625L1174 652L1111 649L1064 621L1027 585L994 532Z"></path>
+                                            <path class="state-fill" d="M1298 520L1356 503L1410 513L1460 553L1476 602L1459 646L1421 685L1363 696L1310 679L1280 645L1274 585Z"></path>
+                                            <path class="state-fill" d="M1344 297L1395 286L1452 302L1494 334L1510 376L1503 420L1467 448L1420 448L1378 420L1343 382Z"></path>
+                                            <path class="state-fill" d="M1194 716L1263 698L1314 711L1350 745L1352 792L1335 829L1294 842L1248 836L1209 807L1191 768Z"></path>
+                                            <path class="state-fill" d="M1409 742L1454 724L1503 737L1531 769L1538 807L1510 834L1466 840L1426 822L1400 787Z"></path>
+                                            <path class="state-highlight" d="M1010 359L1044 346L1082 353L1111 371L1121 404L1116 436L1094 458L1060 468L1028 459L1002 438L992 407L997 378Z"></path>
+                                            <path class="state-highlight" d="M1125 356L1160 354L1193 366L1211 390L1209 421L1194 445L1169 455L1141 451L1118 434L1107 408L1111 379Z"></path>
+                                            <text class="state-label" x="1016" y="396">INDIA</text>
+                                            <text class="state-label" x="1136" y="398">CHINA</text>
+                                            <text class="map-caption" x="774" y="184">EUROPE</text>
+                                            <text class="map-caption" x="850" y="618">AFRICA</text>
+                                            <text class="map-caption" x="181" y="232">NORTH AMERICA</text>
+                                            <text class="map-caption" x="221" y="720">SOUTH AMERICA</text>
+                                            <text class="map-caption" x="1319" y="762">AUSTRALIA</text>
+                                            <text class="sea-label" x="52" y="408">PACIFIC OCEAN</text>
+                                            <text class="sea-label" x="1264" y="434">PACIFIC OCEAN</text>
+                                            <text class="sea-label" x="638" y="431">ATLANTIC OCEAN</text>
+                                            <text class="sea-label" x="1103" y="653">INDIAN OCEAN</text>
+                                            <path class="water-line" d="M38 453C93 429 150 431 208 446"></path>
+                                            <path class="water-line" d="M1268 478C1322 454 1384 458 1447 474"></path>
+                                            <path class="water-line" d="M655 480C702 463 754 467 810 482"></path>
+                                            <path class="water-line" d="M1088 689C1148 672 1216 676 1288 694"></path>
+                                        </svg>
+
+                                        <div class="heat-zone zone-critical zone-mumbai"></div>
+                                        <div class="heat-zone zone-critical zone-thane"></div>
+                                        <div class="heat-zone zone-high zone-pune"></div>
+                                        <div class="heat-zone zone-medium zone-nashik"></div>
+                                        <div class="heat-zone zone-low zone-aurangabad"></div>
+                                        <div class="heat-zone zone-medium zone-nagpur"></div>
+
+                                        <div class="map-marker marker-right marker-mumbai">
+                                            <button class="map-marker-button" type="button" aria-label="Mumbai: Water access and medical support under strain" data-title="Mumbai" data-issue="Water access and medical support under strain" data-meta="950 needs | 120 volunteers">
+                                                <span class="map-pin critical"></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="map-marker marker-right marker-thane">
+                                            <button class="map-marker-button" type="button" aria-label="Thane: Shelter support and flood preparedness gap" data-title="Thane" data-issue="Shelter support and flood preparedness gap" data-meta="890 needs | 110 volunteers">
+                                                <span class="map-pin critical"></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="map-marker marker-right marker-pune">
+                                            <button class="map-marker-button" type="button" aria-label="Pune: Education continuity and ration support needed" data-title="Pune" data-issue="Education continuity and ration support needed" data-meta="780 needs | 95 volunteers">
+                                                <span class="map-pin high"></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="map-marker marker-left marker-nashik">
+                                            <button class="map-marker-button" type="button" aria-label="Nashik: Water logistics and meal support pressure" data-title="Nashik" data-issue="Water logistics and meal support pressure" data-meta="540 needs | 55 volunteers">
+                                                <span class="map-pin medium"></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="map-marker marker-right marker-aurangabad">
+                                            <button class="map-marker-button" type="button" aria-label="Aurangabad: Emerging needs, standby planning advised" data-title="Aurangabad" data-issue="Emerging needs, standby planning advised" data-meta="480 needs | 45 volunteers">
+                                                <span class="map-pin low"></span>
+                                            </button>
+                                        </div>
+
+                                        <div class="map-marker marker-left marker-nagpur">
+                                            <button class="map-marker-button" type="button" aria-label="Nagpur: Nutrition kit demand and transport support" data-title="Nagpur" data-issue="Nutrition kit demand and transport support" data-meta="620 needs | 65 volunteers">
+                                                <span class="map-pin medium"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="map-floating-tooltip" data-map-tooltip aria-hidden="true">
+                                        <strong data-map-tooltip-title></strong>
+                                        <span class="marker-issue" data-map-tooltip-issue></span>
+                                        <span class="marker-meta" data-map-tooltip-meta></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="heatmap-brief">
+                        <div class="heatmap-brief-title">✓ OPERATIONS BRIEF:</div>
+                        <ul>
+                            <li><strong>World overview:</strong> the map now opens on a full-world view so the whole surface is accessible right away.</li>
+                            <li><strong>India hotspot cluster:</strong> your operational markers stay over India, but inside a global context like the SRAS map behavior.</li>
+                            <li><strong>Hover-safe issue cards:</strong> the floating tooltip still clamps inside the viewer even when you zoom in hard.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smart Allocation Tab -->
+            <div id="allocate" class="tab-content">
+                <div class="content-header">
+                    <h2>📊 Step 3: Smart Volunteer Allocation</h2>
+                    <p>Deploy resources based on actual needs</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div style="background: #fff3cd; border: 1px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 3px; font-size: 12px;">
+                        <strong style="color: #856404;">🎯 Allocation Logic: Match volunteers to highest-need areas</strong>
+                    </div>
+
+                    <table class="allocation-table">
+                        <thead>
+                            <tr>
+                                <th>Region</th>
+                                <th>Needs</th>
+                                <th>Current Volunteers</th>
+                                <th>Deficit</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Mumbai</strong></td>
+                                <td class="critical">950</td>
+                                <td>120</td>
+                                <td class="critical">-830</td>
+                                <td style="color: #d32f2f; font-weight: bold;">🚨 CRITICAL - Deploy 85 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Thane</strong></td>
+                                <td class="critical">890</td>
+                                <td>110</td>
+                                <td class="critical">-780</td>
+                                <td style="color: #d32f2f; font-weight: bold;">🚨 CRITICAL - Deploy 78 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Pune</strong></td>
+                                <td class="critical">780</td>
+                                <td>95</td>
+                                <td class="critical">-685</td>
+                                <td style="color: #ff9800; font-weight: bold;">⚠️ HIGH - Deploy 55 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nagpur</strong></td>
+                                <td>620</td>
+                                <td>65</td>
+                                <td>-555</td>
+                                <td style="color: #ff9800; font-weight: bold;">⚠️ MEDIUM - Deploy 35 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nashik</strong></td>
+                                <td>540</td>
+                                <td>55</td>
+                                <td>-485</td>
+                                <td style="color: #ff9800; font-weight: bold;">⚠️ MEDIUM - Deploy 20 more</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aurangabad</strong></td>
+                                <td>480</td>
+                                <td>45</td>
+                                <td>-435</td>
+                                <td style="color: #4caf50; font-weight: bold;">✓ LOW - Monitor</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="background: #e8f5e9; border: 1px solid #4caf50; padding: 12px; margin-top: 15px; border-radius: 3px;">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 8px;">✓ RECOMMENDED ALLOCATION:</div>
+                        <div style="font-size: 12px; color: #2e7d32; line-height: 1.8;">
+                            <div>• <strong>Priority 1 (Critical):</strong> Send 85 volunteers to Mumbai + 78 to Thane immediately</div>
+                            <div>• <strong>Priority 2 (High):</strong> Send 55 volunteers to Pune this week</div>
+                            <div>• <strong>Priority 3 (Medium):</strong> Send 35 to Nagpur + 20 to Nashik next 2 weeks</div>
+                            <div>• <strong>Priority 4 (Emerging):</strong> Monitor Aurangabad - allocate as resources free up</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Impact Tab -->
+            <div id="impact" class="tab-content">
+                <div class="content-header">
+                    <h2>🎯 Step 4: Track Impact & Optimize</h2>
+                    <p>Measure results and continuously improve</p>
+                </div>
+
+                <div style="padding: 15px;">
+                    <div style="background: #e8f5e9; border: 1px solid #4caf50; padding: 12px; margin-bottom: 15px; border-radius: 3px;">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 10px;">📈 BEFORE vs AFTER</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 12px;">
+                            <div>
+                                <div style="color: #d32f2f; font-weight: bold;">❌ BEFORE (Scattered Data)</div>
+                                <ul style="margin-left: 15px; color: #666;">
+                                    <li>Random volunteer deployment</li>
+                                    <li>Coverage = 11% average</li>
+                                    <li>High-need areas neglected</li>
+                                    <li>No data on impact</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <div style="color: #4caf50; font-weight: bold;">✓ AFTER (Data-Driven)</div>
+                                <ul style="margin-left: 15px; color: #2e7d32;">
+                                    <li>Targeted deployment by need</li>
+                                    <li>Coverage = 32% after allocation</li>
+                                    <li>Critical areas prioritized</li>
+                                    <li>Real-time impact tracking</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: #f5f5f5; border: 1px solid #ddd; padding: 12px; border-radius: 3px;">
+                        <div style="color: #003d6b; font-weight: bold; margin-bottom: 10px;">📊 SAMPLE IMPACT METRICS</div>
+                        <table class="allocation-table" style="margin: 0;">
+                            <thead>
+                                <tr>
+                                    <th>Metric</th>
+                                    <th>Before</th>
+                                    <th>After (Projected)</th>
+                                    <th>Improvement</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Volunteer Coverage</strong></td>
+                                    <td>11%</td>
+                                    <td>32%</td>
+                                    <td class="optimal">+191% ⬆️</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Communities Reached</strong></td>
+                                    <td>500</td>
+                                    <td>1,450</td>
+                                    <td class="optimal">+190% ⬆️</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Critical Areas Served</strong></td>
+                                    <td>30%</td>
+                                    <td>89%</td>
+                                    <td class="optimal">+60% ⬆️</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resource Waste</strong></td>
+                                    <td>45%</td>
+                                    <td>8%</td>
+                                    <td class="optimal">-37% ⬇️</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-sidebar">
+            <div class="right-box">
+                <div class="right-header">📊 CURRENT STATUS</div>
+                <div class="right-content">
+                    <div class="stat-right">
+                        <span class="stat-label-right">Data Sources Connected:</span>
+                        <span class="stat-value-right">6/6</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Records Consolidated:</span>
+                        <span class="stat-value-right">1,607</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Districts Mapped:</span>
+                        <span class="stat-value-right">6</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Total Needs:</span>
+                        <span class="stat-value-right">4,230</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Volunteers:</span>
+                        <span class="stat-value-right">490</span>
+                    </div>
+                    <div class="stat-right">
+                        <span class="stat-label-right">Current Coverage:</span>
+                        <span class="stat-value-right" style="color: #d32f2f;">11%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-box">
+                <div class="right-header">✓ SOLUTION BENEFITS</div>
+                <div class="right-content" style="font-size: 11px; line-height: 1.6;">
+                    <div class="impact-badge">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 5px;">🎯 Targeted Allocation</div>
+                        <div>Focus volunteers where needed most</div>
+                    </div>
+                    <div class="impact-badge">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 5px;">📈 Better Coverage</div>
+                        <div>3x improvement in community reach</div>
+                    </div>
+                    <div class="impact-badge">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 5px;">💡 Data-Driven</div>
+                        <div>Decisions based on facts, not guesses</div>
+                    </div>
+                    <div class="impact-badge">
+                        <div style="color: #2e7d32; font-weight: bold; margin-bottom: 5px;">📊 Measurable</div>
+                        <div>Track real impact by region & category</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function initHeatmapMap() {
+            const viewport = document.querySelector('[data-map-viewport]');
+            const stage = document.querySelector('[data-map-stage]');
+            const zoomLevel = document.querySelector('[data-map-zoom-level]');
+            const zoomIn = document.querySelector('[data-map-zoom="in"]');
+            const zoomOut = document.querySelector('[data-map-zoom="out"]');
+            const zoomReset = document.querySelector('[data-map-zoom="reset"]');
+            const markerButtons = document.querySelectorAll('.map-marker-button');
+            const floatingTooltip = document.querySelector('[data-map-tooltip]');
+            const floatingTooltipTitle = document.querySelector('[data-map-tooltip-title]');
+            const floatingTooltipIssue = document.querySelector('[data-map-tooltip-issue]');
+            const floatingTooltipMeta = document.querySelector('[data-map-tooltip-meta]');
+
+            if (!viewport || !stage || !zoomLevel || !zoomIn || !zoomOut || !zoomReset || !floatingTooltip || !floatingTooltipTitle || !floatingTooltipIssue || !floatingTooltipMeta) {
+                return;
+            }
+
+            const stageWidth = 1000;
+            const stageHeight = 760;
+            const state = {
+                scale: 1,
+                minScale: 1,
+                maxScale: 3.4,
+                x: 0,
+                y: 0,
+                isDragging: false,
+                dragStartX: 0,
+                dragStartY: 0,
+                originX: 0,
+                originY: 0,
+            };
+            let activeMarkerButton = null;
+
+            function clampPosition() {
+                const rect = viewport.getBoundingClientRect();
+                const scaledWidth = stageWidth * state.scale;
+                const scaledHeight = stageHeight * state.scale;
+
+                if (scaledWidth <= rect.width) {
+                    state.x = (rect.width - scaledWidth) / 2;
+                } else {
+                    const minX = rect.width - scaledWidth;
+                    state.x = Math.min(0, Math.max(minX, state.x));
+                }
+
+                if (scaledHeight <= rect.height) {
+                    state.y = (rect.height - scaledHeight) / 2;
+                } else {
+                    const minY = rect.height - scaledHeight;
+                    state.y = Math.min(0, Math.max(minY, state.y));
+                }
+            }
+
+            function applyTransform() {
+                clampPosition();
+                stage.style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+                zoomLevel.textContent = `${Math.round((state.scale / state.minScale) * 100)}%`;
+                if (activeMarkerButton) {
+                    requestAnimationFrame(() => showFloatingTooltip(activeMarkerButton));
+                }
+            }
+
+            function hideFloatingTooltip() {
+                floatingTooltip.classList.remove('visible', 'tooltip-tight');
+                floatingTooltip.dataset.placement = 'top';
+                floatingTooltip.setAttribute('aria-hidden', 'true');
+            }
+
+            function showFloatingTooltip(markerButton) {
+                if (!markerButton) {
+                    return;
+                }
+                floatingTooltipTitle.textContent = markerButton.dataset.title || '';
+                floatingTooltipIssue.textContent = markerButton.dataset.issue || '';
+                floatingTooltipMeta.textContent = markerButton.dataset.meta || '';
+                floatingTooltip.classList.add('visible');
+                floatingTooltip.classList.remove('tooltip-tight');
+                floatingTooltip.dataset.placement = 'top';
+                floatingTooltip.setAttribute('aria-hidden', 'false');
+
+                const margin = 12;
+                const viewportRect = viewport.getBoundingClientRect();
+                const markerRect = markerButton.getBoundingClientRect();
+                const maxTooltipWidth = Math.max(140, Math.min(240, viewportRect.width - margin * 2));
+                floatingTooltip.style.maxWidth = `${maxTooltipWidth}px`;
+                let tooltipRect = floatingTooltip.getBoundingClientRect();
+
+                if (tooltipRect.width > maxTooltipWidth) {
+                    floatingTooltip.classList.add('tooltip-tight');
+                    tooltipRect = floatingTooltip.getBoundingClientRect();
+                }
+
+                const markerCenterX = markerRect.left - viewportRect.left + (markerRect.width / 2);
+                let left = markerCenterX - (tooltipRect.width / 2);
+                left = Math.max(margin, Math.min(viewportRect.width - tooltipRect.width - margin, left));
+
+                let top = markerRect.top - viewportRect.top - tooltipRect.height - 18;
+                let placement = 'top';
+                if (top < margin) {
+                    top = markerRect.bottom - viewportRect.top + 18;
+                    placement = 'bottom';
+                }
+                if (top + tooltipRect.height > viewportRect.height - margin) {
+                    top = Math.max(margin, viewportRect.height - tooltipRect.height - margin);
+                }
+
+                let arrowLeft = markerCenterX - left;
+                arrowLeft = Math.max(20, Math.min(tooltipRect.width - 20, arrowLeft));
+
+                floatingTooltip.style.left = `${left}px`;
+                floatingTooltip.style.top = `${top}px`;
+                floatingTooltip.style.setProperty('--arrow-left', `${arrowLeft}px`);
+                floatingTooltip.dataset.placement = placement;
+            }
+
+            function setInitialView() {
+                const rect = viewport.getBoundingClientRect();
+                const fitScale = Math.min(rect.width / stageWidth, rect.height / stageHeight);
+                state.minScale = fitScale;
+                state.scale = fitScale;
+                state.x = (rect.width - stageWidth * state.scale) / 2;
+                state.y = (rect.height - stageHeight * state.scale) / 2;
+                applyTransform();
+            }
+
+            function zoomTo(nextScale, clientX, clientY) {
+                const rect = viewport.getBoundingClientRect();
+                const targetScale = Math.min(state.maxScale, Math.max(state.minScale, nextScale));
+                const anchorX = clientX === undefined ? rect.width / 2 : clientX - rect.left;
+                const anchorY = clientY === undefined ? rect.height / 2 : clientY - rect.top;
+                const mapX = (anchorX - state.x) / state.scale;
+                const mapY = (anchorY - state.y) / state.scale;
+
+                state.scale = targetScale;
+                state.x = anchorX - mapX * state.scale;
+                state.y = anchorY - mapY * state.scale;
+                applyTransform();
+            }
+
+            viewport.addEventListener('wheel', (event) => {
+                event.preventDefault();
+                const direction = event.deltaY < 0 ? 1.15 : 0.87;
+                zoomTo(state.scale * direction, event.clientX, event.clientY);
+            }, { passive: false });
+
+            viewport.addEventListener('pointerdown', (event) => {
+                if (event.target.closest('.map-marker-button') || event.target.closest('.zoom-btn')) {
+                    return;
+                }
+                activeMarkerButton = null;
+                hideFloatingTooltip();
+                state.isDragging = true;
+                state.dragStartX = event.clientX;
+                state.dragStartY = event.clientY;
+                state.originX = state.x;
+                state.originY = state.y;
+                viewport.classList.add('dragging');
+            });
+
+            window.addEventListener('pointermove', (event) => {
+                if (!state.isDragging) {
+                    return;
+                }
+                state.x = state.originX + (event.clientX - state.dragStartX);
+                state.y = state.originY + (event.clientY - state.dragStartY);
+                applyTransform();
+            });
+
+            window.addEventListener('pointerup', () => {
+                state.isDragging = false;
+                viewport.classList.remove('dragging');
+            });
+
+            zoomIn.addEventListener('click', () => zoomTo(state.scale * 1.2));
+            zoomOut.addEventListener('click', () => zoomTo(state.scale * 0.85));
+            zoomReset.addEventListener('click', setInitialView);
+
+            markerButtons.forEach((button) => {
+                button.addEventListener('mouseenter', () => {
+                    activeMarkerButton = button;
+                    requestAnimationFrame(() => showFloatingTooltip(button));
+                });
+                button.addEventListener('mouseleave', () => {
+                    if (activeMarkerButton === button) {
+                        activeMarkerButton = null;
+                    }
+                    hideFloatingTooltip();
+                });
+                button.addEventListener('focus', () => {
+                    activeMarkerButton = button;
+                    requestAnimationFrame(() => showFloatingTooltip(button));
+                });
+                button.addEventListener('blur', () => {
+                    if (activeMarkerButton === button) {
+                        activeMarkerButton = null;
+                    }
+                    hideFloatingTooltip();
+                });
+            });
+
+            window.addEventListener('resize', setInitialView);
+            setInitialView();
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            const allTabs = document.querySelectorAll('.tab-content');
+            allTabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active from all tab buttons
+            const allButtons = document.querySelectorAll('.tab, .nav-item');
+            allButtons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Add active to clicked buttons
+            document.querySelectorAll(`[onclick*="${tabName}"]`).forEach(el => {
+                el.classList.add('active');
+            });
+        }
+
+        initHeatmapMap();
+    </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+{
+  "baseline": {
+    "coverage": 11,
+    "communities_reached": 500,
+    "critical_areas_served": 30,
+    "resource_waste": 45
+  },
+  "benefits": [
+    {
+      "title": "Targeted allocation",
+      "description": "Move teams and supplies using actual district-level need instead of assumptions."
+    },
+    {
+      "title": "Faster response",
+      "description": "Fresh reports and donations update the same operating picture used by coordinators."
+    },
+    {
+      "title": "Measurable planning",
+      "description": "Coverage, gaps, and recent actions stay visible for every region in one place."
+    }
+  ],
+  "sources": [
+    {
+      "name": "Paper Surveys",
+      "description": "Field worker paper forms digitized into the shared hub.",
+      "records": 452
+    },
+    {
+      "name": "Excel Sheets",
+      "description": "Legacy spreadsheets consolidated from partner NGOs.",
+      "records": 328
+    },
+    {
+      "name": "Mobile App Data",
+      "description": "Volunteer check-ins collected from mobile outreach visits.",
+      "records": 215
+    },
+    {
+      "name": "Health Center Reports",
+      "description": "Clinic and community health updates from district partners.",
+      "records": 189
+    },
+    {
+      "name": "School Data",
+      "description": "Education and child welfare needs reported by schools.",
+      "records": 267
+    },
+    {
+      "name": "Government Surveys",
+      "description": "District survey snapshots shared by public agencies.",
+      "records": 156
+    }
+  ],
+  "regions": [
+    {
+      "name": "Mumbai",
+      "needs": 950,
+      "volunteers": 136,
+      "target_volunteers": 205,
+      "focus": "Water access, medical support, and dense community outreach."
+    },
+    {
+      "name": "Thane",
+      "needs": 890,
+      "volunteers": 110,
+      "target_volunteers": 188,
+      "focus": "Shelter support, health camp staffing, and flood preparedness."
+    },
+    {
+      "name": "Pune",
+      "needs": 780,
+      "volunteers": 95,
+      "target_volunteers": 150,
+      "focus": "Education continuity, family ration kits, and senior care visits."
+    },
+    {
+      "name": "Nagpur",
+      "needs": 620,
+      "volunteers": 65,
+      "target_volunteers": 100,
+      "focus": "Nutrition kits, adolescent health outreach, and local transport."
+    },
+    {
+      "name": "Nashik",
+      "needs": 540,
+      "volunteers": 55,
+      "target_volunteers": 75,
+      "focus": "Water logistics, anganwadi support, and school meal coverage."
+    },
+    {
+      "name": "Aurangabad",
+      "needs": 450,
+      "volunteers": 45,
+      "target_volunteers": 45,
+      "focus": "Monitor emerging needs and maintain standby volunteer readiness."
+    }
+  ],
+  "activities": [
+    {
+      "title": "Team deployed to Mumbai",
+      "detail": "16 volunteers assigned. No extra deployment note.",
+      "type": "deployment",
+      "created_at": "2026-04-17T01:08"
+    },
+    {
+      "title": "District records consolidated",
+      "detail": "Six source streams were merged into one planning interface for coordinators.",
+      "type": "aggregation",
+      "created_at": "2026-04-17T08:20"
+    },
+    {
+      "title": "Priority heatmap refreshed",
+      "detail": "Mumbai and Thane stayed on top after the latest district review.",
+      "type": "analysis",
+      "created_at": "2026-04-17T08:45"
+    },
+    {
+      "title": "Volunteer plan reviewed",
+      "detail": "Deployment shortlist prepared for Mumbai, Thane, and Pune first.",
+      "type": "deployment",
+      "created_at": "2026-04-17T09:10"
+    }
+  ],
+  "reports": [],
+  "donations": [],
+  "deployments": [
+    {
+      "region": "Mumbai",
+      "volunteers": 16,
+      "note": "",
+      "created_at": "2026-04-17T01:08"
+    }
+  ]
+}
