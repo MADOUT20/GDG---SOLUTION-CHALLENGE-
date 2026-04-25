@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | Aaple Sarkar Relief Allocation Demo</title>
-    <meta name="description" content="Role-based demo login for the NGO relief allocation portal with separate admin and user access, plus public emergency report submission.">
+    <title>Login | RahatSetu — File Urgent Reports, Get NGO Help</title>
+    <meta name="description" content="RahatSetu is a citizen-first portal to file urgent relief reports and get matched with NGOs providing food, shelter, medical aid, and more.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
@@ -28,47 +28,47 @@
     <header class="brand-header">
         <div class="brand-inner">
             <div class="brand-cluster">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Relief Allocation Portal Logo" class="brand-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RahatSetu Logo" class="brand-logo">
                 <div class="brand-copy">
-                    <div class="brand-overline">Government of Maharashtra</div>
-                    <h1>आपले सरकार Relief Allocation Portal</h1>
-                    <p>MahaDBT-style entry page adapted for NGO operations, SRAS planning, and emergency coordination.</p>
+                    <div class="brand-overline">Citizen Relief Network</div>
+                    <h1>RahatSetu — Urgent Relief Portal</h1>
+                    <p>File urgent reports in minutes and get matched with NGOs providing food, shelter, medical aid, water, and community support.</p>
                 </div>
             </div>
 
             <div class="brand-status">
                 <div>
-                    <strong>Demo Services Active</strong>
-                    <span>Admin and user roles are available with public emergency intake</span>
+                    <strong>Portal Active</strong>
+                    <span>Emergency reports connect directly to NGO response teams</span>
                 </div>
             </div>
         </div>
     </header>
 
-    <section class="scheme-strip" aria-label="Portal sections">
+    <section class="scheme-strip" aria-label="Portal highlights">
         <div class="scheme-grid">
             <article class="scheme-card">
                 <div>
-                    <h2>Admin Access</h2>
-                    <p>SRAS heatmap, smart allocation, impact desk, and data operations.</p>
+                    <h2>🚨 Urgent Reports</h2>
+                    <p>File emergency reports for food, shelter, water, or medical crises — directly routed to active NGOs.</p>
                 </div>
             </article>
             <article class="scheme-card">
                 <div>
-                    <h2>User Access</h2>
-                    <p>NGO-facing portal for profile status, requests, and support actions.</p>
+                    <h2>🤝 NGO Network</h2>
+                    <p>Connected to registered NGOs across Maharashtra ready to respond within hours of your report.</p>
                 </div>
             </article>
             <article class="scheme-card">
                 <div>
-                    <h2>Emergency Submission</h2>
-                    <p>Public route for urgent reports that should enter the response system immediately.</p>
+                    <h2>📍 District Tracking</h2>
+                    <p>Live district-level need score heatmap helping NGOs prioritise the most critical areas first.</p>
                 </div>
             </article>
             <article class="scheme-card">
                 <div>
-                    <h2>Data Backbone</h2>
-                    <p>NGO challenge content on top of the SRAS district planning model.</p>
+                    <h2>🛡️ Safe & Direct</h2>
+                    <p>No middlemen — your report goes straight into the NGO operations dashboard for immediate action.</p>
                 </div>
             </article>
         </div>
@@ -77,45 +77,44 @@
     <section class="alert-strip">
         <div class="alert-inner">
             <span class="alert-label">Notice</span>
-            <p>Select either admin or user access, complete the captcha, and continue. Password-based login has been removed for the demo. Emergency reports can be submitted directly without signing in.</p>
+            <div class="notice-ticker-wrap">
+                <div class="notice-ticker" id="noticeTicker">
+                    <span>🔴 RahatSetu is live — file urgent reports now without needing to sign in.</span>
+                    <span>📢 NGOs are actively monitoring the dashboard for new emergency reports.</span>
+                    <span>🏥 Medical, food, water &amp; shelter requests are being processed in real-time.</span>
+                    <span>⚡ Complete the captcha and login to access the NGO operations portal.</span>
+                    <span>🌐 Covering all 36 districts of Maharashtra through our NGO partner network.</span>
+                    <span>🔴 RahatSetu is live — file urgent reports now without needing to sign in.</span>
+                    <span>📢 NGOs are actively monitoring the dashboard for new emergency reports.</span>
+                    <span>🏥 Medical, food, water &amp; shelter requests are being processed in real-time.</span>
+                    <span>⚡ Complete the captcha and login to access the NGO operations portal.</span>
+                    <span>🌐 Covering all 36 districts of Maharashtra through our NGO partner network.</span>
+                </div>
+            </div>
         </div>
     </section>
 
     <main id="mainContent" class="portal-main role-main">
         <section class="panel notice-panel">
-            <div class="panel-kicker">Portal Summary</div>
-            <h2>Role-Based Access</h2>
+            <div class="panel-kicker">About RahatSetu</div>
+            <h2>Citizens Get Help. NGOs Respond Fast.</h2>
             <ul class="notice-points">
-                <li>Admin access includes SRAS Heatmap, Smart Allocation, and Impact Desk.</li>
-                <li>User access opens a cleaner NGO portal view based on the provided internal layout.</li>
-                <li>Emergency reports are available from a dedicated public submission page.</li>
-                <li>The portal keeps the MahadBT-inspired shell while removing unnecessary scheme-specific clutter.</li>
+                <li>RahatSetu is a unified relief coordination portal connecting citizens in need with NGOs across Maharashtra.</li>
+                <li>File an urgent report — for food, water, shelter, or medical emergencies — without any sign-in required.</li>
+                <li>Reports are routed directly into the NGO operations dashboard and prioritised by district severity.</li>
+                <li>NGO volunteers and coordinators can log in to track allocations, manage deployments, and view live heatmaps.</li>
             </ul>
-
-            <div class="subpanel">
-                <h3>Current Demo IDs</h3>
-                <div class="demo-profile-grid">
-                    <div class="demo-profile-card">
-                        <strong>Admin</strong>
-                        <span>{{ role_profiles["admin"]["username"] }}</span>
-                    </div>
-                    <div class="demo-profile-card">
-                        <strong>User</strong>
-                        <span>{{ role_profiles["user"]["username"] }}</span>
-                    </div>
-                </div>
-            </div>
 
             <div class="subpanel highlight">
                 <h3>Quick Route</h3>
-                <p>Use user access to review NGO-facing information. Use admin access for operational planning and district-level response controls.</p>
+                <p>Citizens: File your urgent report using the Emergency Submission link at the top. NGO coordinators: log in below to access the full operations portal.</p>
             </div>
         </section>
 
         <section class="panel login-panel" id="loginCard">
-            <div class="panel-kicker">Applicant Login Here</div>
-            <h2>Role Login</h2>
-            <p class="panel-intro">Choose the portal role first, then complete the captcha and continue with the prefilled demo ID.</p>
+            <div class="panel-kicker">Portal Login</div>
+            <h2>Login</h2>
+            <p class="panel-intro">Select your role, complete the captcha, and continue.</p>
 
             {% if error %}
             <div class="message message-error">{{ error }}</div>
@@ -127,15 +126,13 @@
                 <div class="role-selector">
                     <button type="button" class="role-option" data-role-option="admin">
                         <span class="role-option-title">Admin Login</span>
-                        <span class="role-option-text">Access operational planning tools and internal district intelligence.</span>
                     </button>
                     <button type="button" class="role-option" data-role-option="user">
                         <span class="role-option-title">User Login</span>
-                        <span class="role-option-text">Open the NGO-facing internal portal with simplified actions and reporting.</span>
                     </button>
                 </div>
 
-                <label for="username">Demo Login ID</label>
+                <label for="username">Login ID</label>
                 <input type="text" id="username" name="username" value="{{ selected_username }}" readonly>
 
                 <label for="captcha">Enter the text shown in image</label>
@@ -147,15 +144,13 @@
                 </div>
                 <input type="text" id="captcha" name="captcha" autocomplete="off" placeholder="Type captcha here" required>
 
-                <p class="helper-text">No password is required for this demo. The captcha is preserved so the portal still feels like the reference flow.</p>
                 <div id="captchaError" class="message message-error hidden" aria-live="polite"></div>
 
-                <button type="submit" class="demo-login-btn" id="loginSubmitButton">Continue as User</button>
+                <button type="submit" class="demo-login-btn" id="loginSubmitButton">Continue</button>
             </form>
 
             <div class="support-actions">
                 <a href="{{ url_for('emergency_report_page') }}" class="ghost-action">Emergency Report Submission</a>
-                <a href="{{ url_for('dashboard_page') }}" class="ghost-action">Open Last Dashboard</a>
             </div>
         </section>
 
@@ -206,9 +201,9 @@
     <section class="donation-section" id="donationSection">
         <div class="donation-inner">
             <div class="donation-copy">
-                <div class="panel-kicker">Support The NGO</div>
-                <h2>Donation Interest Form</h2>
-                <p>Interested supporters can share their details here and use the QR panel to continue to the donation flow. The form card is kept on the home screen so fundraising stays visible even before login.</p>
+                <div class="panel-kicker">Get Involved</div>
+                <h2>Volunteer &amp; Support Interest</h2>
+                <p>Want to help NGOs on the ground? Register your interest below — our partner NGOs will reach out to coordinate your contribution.</p>
 
                 {% if donation_success %}
                 <div class="message message-success">{{ donation_success }}</div>
@@ -222,33 +217,39 @@
                     <div class="field-grid two-col">
                         <div>
                             <label for="donor_name">Full Name</label>
-                            <input type="text" id="donor_name" name="donor_name" placeholder="Enter full name" required>
+                            <input type="text" id="donor_name" name="donor_name" placeholder="Your full name" required>
                         </div>
                         <div>
                             <label for="donor_email">Email Address</label>
-                            <input type="email" id="donor_email" name="donor_email" placeholder="Enter email address" required>
+                            <input type="email" id="donor_email" name="donor_email" placeholder="Your email address" required>
                         </div>
                     </div>
 
                     <div class="field-grid two-col">
                         <div>
                             <label for="donor_phone">Phone Number</label>
-                            <input type="text" id="donor_phone" name="donor_phone" placeholder="Enter phone number">
+                            <input type="text" id="donor_phone" name="donor_phone" placeholder="Your contact number">
                         </div>
                         <div>
-                            <label for="donation_amount">Planned Amount</label>
-                            <input type="text" id="donation_amount" name="donation_amount" placeholder="Enter support amount">
+                            <label for="support_type">How Can You Help?</label>
+                            <select id="support_type" name="support_type">
+                                <option value="Volunteer On-Ground">Volunteer On-Ground</option>
+                                <option value="Monetary Donation">Monetary Donation</option>
+                                <option value="Supply / Materials">Supply / Materials</option>
+                                <option value="Medical Support">Medical Support</option>
+                                <option value="Logistics & Transport">Logistics &amp; Transport</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
                     </div>
 
                     <div>
-                        <label for="donation_note">Message</label>
-                        <textarea id="donation_note" name="donation_note" rows="4" placeholder="Share how you would like to support the NGO."></textarea>
+                        <label for="donation_note">Message / Additional Details</label>
+                        <textarea id="donation_note" name="donation_note" rows="4" placeholder="Tell us how you'd like to contribute or any relevant skills you have."></textarea>
                     </div>
 
                     <div class="support-actions">
-                        <button type="submit" class="demo-login-btn">Submit Donation Interest</button>
-                        <a href="{{ donation_form_url }}" class="ghost-action" target="_blank" rel="noreferrer">Open Google Form</a>
+                        <button type="submit" class="demo-login-btn">Register My Interest</button>
                     </div>
                 </form>
             </div>
@@ -272,11 +273,11 @@
     <footer class="portal-footer">
         <div class="portal-footer-inner">
             <div class="footer-copy">
-                <strong>Aaple Sarkar Relief Allocation Portal</strong>
-                <span>Role-based demo access for NGO and response operations</span>
+                <strong>RahatSetu — Urgent Relief Portal</strong>
+                <span>Connecting citizens to NGO relief networks across Maharashtra</span>
             </div>
             <div class="footer-copy muted">
-                Admin view, user view, and emergency submission are all active
+                Emergency submissions open 24/7 &bull; No login required for urgent reports
             </div>
         </div>
     </footer>

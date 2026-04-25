@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Aaple Sarkar Relief Allocation Portal</title>
-    <meta name="description" content="Admin-only NGO operations workspace styled to align with the user portal while keeping restricted planning tools.">
+    <title>Admin Dashboard | RahatSetu — Urgent Relief Portal</title>
+    <meta name="description" content="Admin workspace for district planning, SRAS heatmap review, resource allocation, and NGO supervision.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
@@ -33,11 +33,11 @@
     <header class="admin-header">
         <div class="admin-header-inner">
             <div class="admin-brand-left">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Portal Logo" class="admin-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RahatSetu Logo" class="admin-logo">
                 <div class="admin-brand-text">
-                    <div class="brand-overline">Government of Maharashtra</div>
-                    <h1>आपले सरकार Admin Operations Portal</h1>
-                    <p>Restricted workspace for district planning, SRAS heatmap review, resource allocation, and NGO profile supervision.</p>
+                    <div class="brand-overline">Citizen Relief Network</div>
+                    <h1>RahatSetu Admin Operations Portal</h1>
+                    <p>Restricted workspace for district planning, SRAS heatmap review, resource allocation, and NGO supervision.</p>
                 </div>
             </div>
             <div class="admin-header-status">
@@ -74,10 +74,6 @@
             <button type="button" class="sidebar-link" data-tab="impact">Impact Desk</button>
             <button type="button" class="sidebar-link" data-tab="ngo-profile">NGO Profile</button>
 
-            <div class="sidebar-help">
-                <a href="{{ url_for('emergency_report_page') }}" class="help-button">Emergency Report Submission</a>
-            </div>
-
             <div class="sidebar-card">
                 <strong>{{ ngo_profile.ngo_name }}</strong>
                 <span>{{ ngo_profile.registration_id }}</span>
@@ -90,11 +86,7 @@
                 <div class="content-header">
                     <div>
                         <h2>Admin Overview</h2>
-                        <p>Operational summary of the challenge system, aligned visually with the user workspace.</p>
-                    </div>
-                    <div class="header-actions">
-                        <a href="{{ url_for('emergency_report_page') }}" class="primary-action">Emergency Report Submission</a>
-                        <a href="{{ url_for('login_page') }}" class="secondary-action">Return To Home Screen</a>
+                        <p>Operational summary of district needs, NGO deployments, and response coverage.</p>
                     </div>
                 </div>
 
@@ -138,7 +130,7 @@
                     </div>
                     <div class="profile-story-card">
                         <h4>NGO Supervision</h4>
-                        <p>Review the NGO profile and current district focus before response actions are logged.</p>
+                        <p>Review the NGO profiles allocated to each district before response actions are logged.</p>
                     </div>
                 </div>
             </section>
@@ -246,13 +238,13 @@
 
             <section id="ngo-profile" class="tab-content">
                 <div class="section-heading">
-                    <h3>NGO Profile</h3>
-                    <p>Organization-level profile information is maintained here in the admin workspace.</p>
+                    <h3>NGO Profiles by Region</h3>
+                    <p>NGOs allocated to each district are shown below. The focus district determines which NGO is the primary responder for that area.</p>
                 </div>
 
                 <div class="detail-grid">
                     <div class="detail-card">
-                        <span>NGO Name</span>
+                        <span>Primary NGO</span>
                         <strong>{{ ngo_profile.ngo_name }}</strong>
                     </div>
                     <div class="detail-card">
@@ -282,6 +274,33 @@
                         <h4>Contact Phone</h4>
                         <p>{{ ngo_profile.contact_phone }}</p>
                     </div>
+                </div>
+
+                <div class="section-heading" style="margin-top:28px">
+                    <h3>All Region-Allocated NGOs</h3>
+                    <p>Each district is assigned a lead NGO based on their geographic focus and operational capacity.</p>
+                </div>
+                <div class="table-panel">
+                    <table class="allocation-table">
+                        <thead>
+                            <tr>
+                                <th>District / Region</th>
+                                <th>Allocated NGO</th>
+                                <th>Focus Area</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Mumbai</td><td>Sahyog Relief Foundation</td><td>Emergency health &amp; nutrition support</td><td>Active</td></tr>
+                            <tr><td>Pune</td><td>Prayaas Seva Sangh</td><td>Flood relief &amp; family rehabilitation</td><td>Active</td></tr>
+                            <tr><td>Nagpur</td><td>Aakar Welfare Trust</td><td>Medical aid &amp; clean water supply</td><td>Active</td></tr>
+                            <tr><td>Nashik</td><td>Disha Relief Society</td><td>Food distribution &amp; shelter coordination</td><td>Active</td></tr>
+                            <tr><td>Aurangabad</td><td>Umang Community Foundation</td><td>Women &amp; child welfare, nutrition</td><td>Active</td></tr>
+                            <tr><td>Solapur</td><td>Prayas Grameen Seva</td><td>Drought relief &amp; water tanker coordination</td><td>Active</td></tr>
+                            <tr><td>Kolhapur</td><td>Sahara Community Hub</td><td>Flood response &amp; temporary shelter</td><td>Active</td></tr>
+                            <tr><td>Amravati</td><td>Suryodaya Relief Net</td><td>Agricultural crisis &amp; livelihood support</td><td>Active</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </section>
         </section>
@@ -329,10 +348,10 @@
     <footer class="admin-footer">
         <div class="admin-footer-inner">
             <div class="footer-copy">
-                <strong>Aaple Sarkar Admin Operations Portal</strong>
-                <span>Admin-facing workspace aligned with the NGO user layout</span>
+                <strong>RahatSetu Admin Operations Portal</strong>
+                <span>Restricted workspace for district planning and NGO coordination</span>
             </div>
-            <div class="footer-copy">NGO on file: {{ ngo_profile.ngo_name }}</div>
+            <div class="footer-copy">Primary NGO: {{ ngo_profile.ngo_name }}</div>
         </div>
     </footer>
 

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Portal | Aaple Sarkar Relief Allocation Demo</title>
-    <meta name="description" content="User-facing NGO portal closely modeled on the provided internal layout and adapted for relief operations.">
+    <title>User Portal | RahatSetu — NGO Response Dashboard</title>
+    <meta name="description" content="NGO partner dashboard for tracking community needs, support requests, notifications, and coordinating relief operations.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
@@ -31,11 +31,11 @@
     <header class="user-header">
         <div class="user-header-inner">
             <div class="user-brand-left">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Portal Logo" class="user-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RahatSetu Logo" class="user-logo">
                 <div class="user-brand-text">
-                    <div class="brand-overline">Government of Maharashtra</div>
-                    <h1>आपले सरकार NGO Response Portal</h1>
-                    <p>{{ user_profile.ngo_name }} internal workspace for profile tracking, community response, and NGO support requests.</p>
+                    <div class="brand-overline">Citizen Relief Network</div>
+                    <h1>RahatSetu NGO Response Portal</h1>
+                    <p>Welcome, {{ demo_user }} — track community needs, manage support requests, and coordinate relief across your district.</p>
                 </div>
             </div>
             <div class="user-header-status">
@@ -58,23 +58,14 @@
 
     <main class="user-shell" id="mainContent">
         <aside class="user-sidebar">
-            <button type="button" class="sidebar-link active" data-user-section="home">Home</button>
-            <button type="button" class="sidebar-link" data-user-section="profile">Profile</button>
-            <button type="button" class="sidebar-link" data-user-section="community">Community Needs</button>
-            <button type="button" class="sidebar-link" data-user-section="requests">My Requests</button>
+            <button type="button" class="sidebar-link active" data-user-section="home">Dashboard Home</button>
             <button type="button" class="sidebar-link" data-user-section="resources">Resource Desk</button>
-            <button type="button" class="sidebar-link" data-user-section="emergency">Emergency Reports</button>
             <button type="button" class="sidebar-link" data-user-section="grievance">Grievance / Suggestion</button>
-            <button type="button" class="sidebar-link" data-user-section="notifications">Notifications</button>
-
-            <div class="sidebar-help">
-                <a href="{{ url_for('emergency_report_page') }}" class="help-button">Emergency Report Submission</a>
-            </div>
 
             <div class="sidebar-card">
-                <strong>{{ user_profile.ngo_name }}</strong>
-                <span>Focus district: {{ user_profile.district }}</span>
-                <span>{{ user_profile.focus_area }}</span>
+                <strong>{{ demo_user }}</strong>
+                <span>District: {{ user_profile.district }}</span>
+                <span>{{ user_profile.status }}</span>
             </div>
         </aside>
 
@@ -83,12 +74,8 @@
             <section class="user-section active" id="user-section-home">
                 <div class="content-header">
                     <div>
-                        <h2>Organization Response Status (AY 2025-2026)</h2>
-                        <p>NGO-facing portal view aligned to the provided internal layout and cleaned for relief operations.</p>
-                    </div>
-                    <div class="header-actions">
-                        <a href="{{ url_for('emergency_report_page') }}" class="primary-action">Emergency Report Submission</a>
-                        <a href="{{ url_for('login_page') }}" class="secondary-action">Return To Home Screen</a>
+                        <h2>Organization Response Status</h2>
+                        <p>Track community needs, monitor active deployments, and coordinate NGO support across your focus district.</p>
                     </div>
                 </div>
 
@@ -124,7 +111,7 @@
                 <div class="table-panel">
                     <div class="table-title-row">
                         <h3>Suggested Priority Support Areas</h3>
-                        <span>Only NGO-relevant columns are shown here.</span>
+                        <span>Districts with highest need scores in your region.</span>
                     </div>
                     <table class="action-table">
                         <thead>
@@ -141,7 +128,7 @@
                                 <td>{{ region.name }}</td>
                                 <td>{{ region.focus }}</td>
                                 <td>{{ region.severity_label }}</td>
-                                <td><a href="{{ url_for('emergency_report_page') }}?region={{ region.name }}">Submit Support Note</a></td>
+                                <td><a href="/emergency?region={{ region.name }}">Submit Support Note</a></td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -151,34 +138,34 @@
 
             <section class="user-section" id="user-section-profile">
                 <div class="section-heading">
-                    <h3>NGO Profile</h3>
-                    <p>Profile details adapted to the internal portal style and kept specific to your NGO workspace.</p>
+                    <h3>My Profile</h3>
+                    <p>Your account details and contact information registered with the RahatSetu portal.</p>
                 </div>
                 <div class="detail-grid">
                     <div class="detail-card">
-                        <span>NGO Name</span>
-                        <strong>{{ user_profile.ngo_name }}</strong>
-                    </div>
-                    <div class="detail-card">
-                        <span>Registration ID</span>
-                        <strong>{{ user_profile.registration_id }}</strong>
-                    </div>
-                    <div class="detail-card">
-                        <span>Coordinator</span>
+                        <span>Full Name</span>
                         <strong>{{ demo_user }}</strong>
+                    </div>
+                    <div class="detail-card">
+                        <span>Coordinator ID</span>
+                        <strong>{{ user_profile.registration_id }}</strong>
                     </div>
                     <div class="detail-card">
                         <span>Focus District</span>
                         <strong>{{ user_profile.district }}</strong>
                     </div>
+                    <div class="detail-card">
+                        <span>Account Status</span>
+                        <strong>{{ user_profile.status }}</strong>
+                    </div>
                 </div>
                 <div class="profile-story">
                     <div class="profile-story-card">
-                        <h4>Focus Area</h4>
-                        <p>{{ user_profile.focus_area }}</p>
+                        <h4>Primary Role</h4>
+                        <p>NGO Field Coordinator</p>
                     </div>
                     <div class="profile-story-card">
-                        <h4>Contact Desk</h4>
+                        <h4>Contact</h4>
                         <p>{{ user_profile.contact_email }}</p>
                         <p>{{ user_profile.contact_phone }}</p>
                     </div>
@@ -192,7 +179,7 @@
             <section class="user-section" id="user-section-community">
                 <div class="section-heading">
                     <h3>Community Needs</h3>
-                    <p>Interactive region cards let NGO users scan district priorities without seeing the admin-only planning tabs.</p>
+                    <p>District priority cards — scan the current need level across regions and coordinate your NGO response.</p>
                 </div>
                 <div class="community-grid">
                     {% for region in dashboard.regions %}
@@ -206,7 +193,7 @@
                             <span>Needs: {{ region.needs }}</span>
                             <span>Volunteers: {{ region.volunteers }}</span>
                         </div>
-                        <a href="{{ url_for('emergency_report_page') }}?region={{ region.name }}" class="community-action">Report For {{ region.name }}</a>
+                        <a href="/emergency?region={{ region.name }}" class="community-action">Report For {{ region.name }}</a>
                     </article>
                     {% endfor %}
                 </div>
@@ -215,7 +202,7 @@
             <section class="user-section" id="user-section-requests">
                 <div class="section-heading">
                     <h3>My Requests</h3>
-                    <p>Request-tracking blocks keep the user portal operational without exposing admin planning tools.</p>
+                    <p>Track your submitted support requests and check their current status.</p>
                 </div>
                 <div class="table-panel">
                     <table class="action-table compact-table">
@@ -230,10 +217,17 @@
                         <tbody>
                             {% for region in dashboard.regions[:5] %}
                             <tr>
-                                <td>{{ user_profile.ngo_name }} support request for {{ region.focus }}</td>
+                                <td>Support request for {{ region.focus }}</td>
                                 <td>{{ region.name }}</td>
                                 <td>{% if loop.index0 < 2 %}In Review{% elif loop.index0 < 4 %}Action Required{% else %}Submitted{% endif %}</td>
-                                <td><a href="{{ url_for('emergency_report_page') }}?region={{ region.name }}">Update</a></td>
+                                <td>
+                                    <button type="button" class="note-btn"
+                                        data-region="{{ region.name }}"
+                                        data-focus="{{ region.focus }}"
+                                        onclick="openNoteModal(this)">
+                                        Add Note
+                                    </button>
+                                </td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -244,7 +238,7 @@
             <section class="user-section" id="user-section-resources">
                 <div class="section-heading">
                     <h3>Resource Desk</h3>
-                    <p>Available source streams and support inputs relevant for the NGO user view.</p>
+                    <p>Available source streams and support inputs from NGO data feeds relevant to your district.</p>
                 </div>
                 <div class="resource-grid">
                     {% for source in dashboard.sources[:6] %}
@@ -260,14 +254,14 @@
             <section class="user-section" id="user-section-emergency">
                 <div class="section-heading">
                     <h3>Emergency Reports</h3>
-                    <p>Use the public intake route whenever the NGO needs to escalate a district emergency immediately.</p>
+                    <p>File an urgent field report whenever your NGO needs to escalate a district emergency immediately.</p>
                 </div>
                 <div class="emergency-callout">
                     <div>
                         <strong>Immediate support route</strong>
                         <p>Submit urgent field reports for shelter, food, water, or medical aid. These updates feed the operational dashboard right away.</p>
                     </div>
-                    <a href="{{ url_for('emergency_report_page') }}" class="primary-action">Open Emergency Submission</a>
+                    <a href="/emergency" class="primary-action">Open Emergency Submission</a>
                 </div>
             </section>
 
@@ -327,14 +321,68 @@
     <footer class="user-footer">
         <div class="user-footer-inner">
             <div class="footer-copy">
-                <strong>Aaple Sarkar NGO Response Portal</strong>
-                <span>User-facing internal dashboard for NGO operations</span>
+                <strong>RahatSetu NGO Response Portal</strong>
+                <span>NGO partner dashboard for field coordination and relief operations</span>
             </div>
-            <div class="footer-copy">NGO: {{ user_profile.ngo_name }} | Demo ID: {{ demo_login }}</div>
+            <div class="footer-copy">Coordinator: {{ demo_user }} | District: {{ user_profile.district }}</div>
         </div>
     </footer>
 
+
+    <!-- Add Note Modal -->
+    <div id="noteModalOverlay" class="note-modal-overlay hidden" onclick="closeNoteModal(event)">
+        <div class="note-modal-card">
+            <div class="note-modal-header">
+                <div>
+                    <h3 id="noteModalTitle">Add Follow-up Note</h3>
+                    <p id="noteModalSub" class="note-modal-sub"></p>
+                </div>
+                <button type="button" class="note-modal-close" onclick="closeNoteModal()">&#10005;</button>
+            </div>
+            <form class="note-modal-form" onsubmit="submitNote(event)">
+                <input type="hidden" id="noteRegionInput" name="region">
+                <label for="noteText">Your Note</label>
+                <textarea id="noteText" name="note" rows="4"
+                    placeholder="Describe the current situation, any change in needs, or additional context for the support team."
+                    required></textarea>
+                <label for="noteContact">Your Contact (optional)</label>
+                <input type="text" id="noteContact" name="contact" placeholder="Phone or email for follow-up">
+                <div id="noteSuccess" class="note-success hidden">✔ Note submitted successfully. The support team has been notified.</div>
+                <div class="note-modal-actions">
+                    <button type="submit" class="note-submit-btn">Submit Note</button>
+                    <button type="button" class="note-cancel-btn" onclick="closeNoteModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
     <script src="{{ url_for('static', filename='js/user_dashboard.js') }}"></script>
+    <script>
+        function openNoteModal(btn) {
+            var region = btn.getAttribute('data-region');
+            var focus = btn.getAttribute('data-focus');
+            document.getElementById('noteModalTitle').textContent = 'Add Note — ' + region;
+            document.getElementById('noteModalSub').textContent = 'Request type: ' + focus;
+            document.getElementById('noteRegionInput').value = region;
+            document.getElementById('noteText').value = '';
+            document.getElementById('noteContact').value = '';
+            document.getElementById('noteSuccess').classList.add('hidden');
+            document.getElementById('noteModalOverlay').classList.remove('hidden');
+            document.getElementById('noteText').focus();
+        }
+        function closeNoteModal(event) {
+            if (!event || event.target === document.getElementById('noteModalOverlay')) {
+                document.getElementById('noteModalOverlay').classList.add('hidden');
+            }
+        }
+        function submitNote(event) {
+            event.preventDefault();
+            document.getElementById('noteSuccess').classList.remove('hidden');
+            setTimeout(function() {
+                document.getElementById('noteModalOverlay').classList.add('hidden');
+            }, 2000);
+        }
+    </script>
 </body>
 </html>

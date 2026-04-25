@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emergency Report Submission | Aaple Sarkar Relief Allocation Portal</title>
-    <meta name="description" content="Public emergency report submission page for urgent NGO and district support updates.">
+    <title>Emergency Report | RahatSetu — Urgent Relief Portal</title>
+    <meta name="description" content="File an urgent emergency report directly into the RahatSetu NGO response system. No login required.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
@@ -28,11 +28,11 @@
     <header class="brand-header">
         <div class="brand-inner">
             <div class="brand-cluster">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Relief Allocation Portal Logo" class="brand-logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RahatSetu Logo" class="brand-logo">
                 <div class="brand-copy">
-                    <div class="brand-overline">Government of Maharashtra</div>
-                    <h1>Emergency Report Submission</h1>
-                    <p>Use this page to send urgent field updates directly into the response system.</p>
+                    <div class="brand-overline">Citizen Relief Network</div>
+                    <h1>RahatSetu — File Urgent Report</h1>
+                    <p>Use this page to send urgent field updates directly into the NGO response system. No login required.</p>
                 </div>
             </div>
 
@@ -60,15 +60,9 @@
             {% endif %}
 
             <form method="POST" action="{{ url_for('emergency_report_submit') }}" class="report-form-grid">
-                <div class="field-grid two-col">
-                    <div>
-                        <label for="reporter_name">Reporter Name</label>
-                        <input type="text" id="reporter_name" name="reporter_name" placeholder="Enter reporter name">
-                    </div>
-                    <div>
-                        <label for="organization">Organization</label>
-                        <input type="text" id="organization" name="organization" placeholder="Enter NGO or field unit">
-                    </div>
+                <div>
+                    <label for="reporter_name">Reporter Name</label>
+                    <input type="text" id="reporter_name" name="reporter_name" placeholder="Enter reporter name">
                 </div>
 
                 <div class="field-grid two-col">
@@ -148,11 +142,11 @@
     <footer class="portal-footer">
         <div class="portal-footer-inner">
             <div class="footer-copy">
-                <strong>Aaple Sarkar Relief Allocation Portal</strong>
+                <strong>RahatSetu — Urgent Relief Portal</strong>
                 <span>Emergency reporting channel for urgent community updates</span>
             </div>
             <div class="footer-copy muted">
-                Public submission route
+                Public submission route — no login required
             </div>
         </div>
     </footer>

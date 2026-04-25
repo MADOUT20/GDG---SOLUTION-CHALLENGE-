@@ -713,3 +713,205 @@ textarea {
         overflow-x: auto;
     }
 }
+
+/* ── Add Note button (requests table) ─────────────────────── */
+.note-btn {
+    background: #eef4ff;
+    border: 1px solid #b8cff5;
+    border-radius: 8px;
+    color: #1e4db7;
+    cursor: pointer;
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 8px 14px;
+    transition: background 0.18s ease, box-shadow 0.18s ease;
+    white-space: nowrap;
+}
+
+.note-btn:hover {
+    background: #daeaff;
+    box-shadow: 0 4px 10px rgba(30, 77, 183, 0.12);
+}
+
+/* ── Add Note modal ────────────────────────────────────────── */
+.note-modal-overlay {
+    align-items: center;
+    background: rgba(18, 30, 54, 0.52);
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 9000;
+    backdrop-filter: blur(3px);
+}
+
+.note-modal-overlay.hidden {
+    display: none;
+}
+
+.note-modal-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 32px 64px rgba(18, 30, 54, 0.22);
+    max-width: 560px;
+    padding: 28px;
+    width: 92%;
+    animation: noteSlideIn 0.22s ease;
+}
+
+@keyframes noteSlideIn {
+    from { opacity: 0; transform: translateY(18px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.note-modal-header {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.note-modal-header h3 {
+    color: var(--portal-blue-deep);
+    font-size: 1.22rem;
+}
+
+.note-modal-sub {
+    color: var(--portal-muted);
+    font-size: 0.88rem;
+    margin-top: 4px;
+}
+
+.note-modal-close {
+    background: #f0f2f5;
+    border: none;
+    border-radius: 50%;
+    color: #555;
+    cursor: pointer;
+    flex-shrink: 0;
+    font-size: 1rem;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    width: 34px;
+    transition: background 0.15s;
+}
+
+.note-modal-close:hover {
+    background: #e0e4ea;
+}
+
+.note-modal-form {
+    display: grid;
+    gap: 12px;
+}
+
+.note-modal-form label {
+    color: var(--portal-blue-deep);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.note-modal-form textarea,
+.note-modal-form input[type="text"] {
+    background: #f8fafc;
+    border: 1px solid #c8d4e3;
+    border-radius: 12px;
+    color: var(--portal-text);
+    font: inherit;
+    min-height: 46px;
+    padding: 11px 14px;
+    width: 100%;
+    transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.note-modal-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.note-modal-form textarea:focus,
+.note-modal-form input[type="text"]:focus {
+    border-color: #1e4db7;
+    box-shadow: 0 0 0 3px rgba(30, 77, 183, 0.12);
+    outline: none;
+}
+
+.note-success {
+    background: #eef9f0;
+    border: 1px solid #b7dfbe;
+    border-radius: 10px;
+    color: #1c7e29;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 11px 14px;
+}
+
+.note-success.hidden {
+    display: none;
+}
+
+.note-modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.note-submit-btn {
+    background: linear-gradient(135deg, #1e4db7, #2563eb);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 18px rgba(30, 77, 183, 0.22);
+    color: #fff;
+    cursor: pointer;
+    flex: 1;
+    font-size: 0.98rem;
+    font-weight: 700;
+    min-height: 48px;
+    padding: 0 16px;
+    transition: filter 0.18s;
+}
+
+.note-submit-btn:hover {
+    filter: brightness(1.08);
+}
+
+.note-cancel-btn {
+    background: #f0f2f5;
+    border: 1px solid #d0d8e4;
+    border-radius: 12px;
+    color: var(--portal-text);
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 700;
+    min-height: 48px;
+    padding: 0 18px;
+    transition: background 0.15s;
+}
+
+.note-cancel-btn:hover {
+    background: #e4e8ef;
+}
+
+/* Select in donation form */
+.donation-form-card select {
+    background: #fff;
+    border: 1px solid #cbd7e3;
+    border-radius: 14px;
+    color: var(--portal-text, #1e293b);
+    font: inherit;
+    min-height: 48px;
+    padding: 12px 14px;
+    width: 100%;
+}
+
+.donation-form-card select:focus {
+    border-color: var(--portal-orange, #f28c28);
+    box-shadow: 0 0 0 4px rgba(242, 140, 40, 0.14);
+    outline: none;
+}
+
