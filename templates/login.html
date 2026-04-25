@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Aaple Sarkar Relief Allocation Demo</title>
+    <meta name="description" content="Role-based demo login for the NGO relief allocation portal with separate admin and user access, plus public emergency report submission.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="portal-login">
+    <div class="utility-bar">
+        <div class="utility-inner">
+            <div class="utility-links">
+                <a href="#mainContent">Skip To Main Content</a>
+                <a href="#loginCard">Skip To Navigation</a>
+                <a href="{{ url_for('emergency_report_page') }}">Emergency Report Submission</a>
+            </div>
+            <div class="font-controls" aria-label="Font size controls">
+                <button type="button" class="font-btn" data-font-adjust="-1">A-</button>
+                <button type="button" class="font-btn" data-font-adjust="1">A+</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="brand-header">
+        <div class="brand-inner">
+            <div class="brand-cluster">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Relief Allocation Portal Logo" class="brand-logo">
+                <div class="brand-copy">
+                    <div class="brand-overline">Government of Maharashtra</div>
+                    <h1>आपले सरकार Relief Allocation Portal</h1>
+                    <p>MahaDBT-style entry page adapted for NGO operations, SRAS planning, and emergency coordination.</p>
+                </div>
+            </div>
+
+            <div class="brand-status">
+                <div>
+                    <strong>Demo Services Active</strong>
+                    <span>Admin and user roles are available with public emergency intake</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="scheme-strip" aria-label="Portal sections">
+        <div class="scheme-grid">
+            <article class="scheme-card">
+                <div>
+                    <h2>Admin Access</h2>
+                    <p>SRAS heatmap, smart allocation, impact desk, and data operations.</p>
+                </div>
+            </article>
+            <article class="scheme-card">
+                <div>
+                    <h2>User Access</h2>
+                    <p>NGO-facing portal for profile status, requests, and support actions.</p>
+                </div>
+            </article>
+            <article class="scheme-card">
+                <div>
+                    <h2>Emergency Submission</h2>
+                    <p>Public route for urgent reports that should enter the response system immediately.</p>
+                </div>
+            </article>
+            <article class="scheme-card">
+                <div>
+                    <h2>Data Backbone</h2>
+                    <p>NGO challenge content on top of the SRAS district planning model.</p>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="alert-strip">
+        <div class="alert-inner">
+            <span class="alert-label">Notice</span>
+            <p>Select either admin or user access, complete the captcha, and continue. Password-based login has been removed for the demo. Emergency reports can be submitted directly without signing in.</p>
+        </div>
+    </section>
+
+    <main id="mainContent" class="portal-main role-main">
+        <section class="panel notice-panel">
+            <div class="panel-kicker">Portal Summary</div>
+            <h2>Role-Based Access</h2>
+            <ul class="notice-points">
+                <li>Admin access includes SRAS Heatmap, Smart Allocation, and Impact Desk.</li>
+                <li>User access opens a cleaner NGO portal view based on the provided internal layout.</li>
+                <li>Emergency reports are available from a dedicated public submission page.</li>
+                <li>The portal keeps the MahadBT-inspired shell while removing unnecessary scheme-specific clutter.</li>
+            </ul>
+
+            <div class="subpanel">
+                <h3>Current Demo IDs</h3>
+                <div class="demo-profile-grid">
+                    <div class="demo-profile-card">
+                        <strong>Admin</strong>
+                        <span>{{ role_profiles["admin"]["username"] }}</span>
+                    </div>
+                    <div class="demo-profile-card">
+                        <strong>User</strong>
+                        <span>{{ role_profiles["user"]["username"] }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subpanel highlight">
+                <h3>Quick Route</h3>
+                <p>Use user access to review NGO-facing information. Use admin access for operational planning and district-level response controls.</p>
+            </div>
+        </section>
+
+        <section class="panel login-panel" id="loginCard">
+            <div class="panel-kicker">Applicant Login Here</div>
+            <h2>Role Login</h2>
+            <p class="panel-intro">Choose the portal role first, then complete the captcha and continue with the prefilled demo ID.</p>
+
+            {% if error %}
+            <div class="message message-error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('login_submit') }}" class="demo-login-form" data-captcha-form>
+                <input type="hidden" id="roleInput" name="role" value="{{ selected_role }}">
+
+                <div class="role-selector">
+                    <button type="button" class="role-option" data-role-option="admin">
+                        <span class="role-option-title">Admin Login</span>
+                        <span class="role-option-text">Access operational planning tools and internal district intelligence.</span>
+                    </button>
+                    <button type="button" class="role-option" data-role-option="user">
+                        <span class="role-option-title">User Login</span>
+                        <span class="role-option-text">Open the NGO-facing internal portal with simplified actions and reporting.</span>
+                    </button>
+                </div>
+
+                <label for="username">Demo Login ID</label>
+                <input type="text" id="username" name="username" value="{{ selected_username }}" readonly>
+
+                <label for="captcha">Enter the text shown in image</label>
+                <div class="captcha-row">
+                    <div class="captcha-display" aria-live="polite">
+                        <span id="captchaText">ADMIN</span>
+                    </div>
+                    <button type="button" class="refresh-btn" id="refreshCaptcha">Refresh</button>
+                </div>
+                <input type="text" id="captcha" name="captcha" autocomplete="off" placeholder="Type captcha here" required>
+
+                <p class="helper-text">No password is required for this demo. The captcha is preserved so the portal still feels like the reference flow.</p>
+                <div id="captchaError" class="message message-error hidden" aria-live="polite"></div>
+
+                <button type="submit" class="demo-login-btn" id="loginSubmitButton">Continue as User</button>
+            </form>
+
+            <div class="support-actions">
+                <a href="{{ url_for('emergency_report_page') }}" class="ghost-action">Emergency Report Submission</a>
+                <a href="{{ url_for('dashboard_page') }}" class="ghost-action">Open Last Dashboard</a>
+            </div>
+        </section>
+
+        <aside class="panel preview-panel">
+            <div class="panel-kicker">Portal Snapshot</div>
+            <h2>Maharashtra Response Overview</h2>
+
+            {% if preview %}
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <span class="stat-label">Districts</span>
+                    <strong>{{ preview.summary.districts_mapped }}</strong>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Sources</span>
+                    <strong>{{ preview.summary.data_sources_connected }}</strong>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Volunteers</span>
+                    <strong>{{ preview.summary.volunteers }}</strong>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Coverage</span>
+                    <strong>{{ preview.summary.current_coverage }}%</strong>
+                </div>
+            </div>
+
+            <div class="heat-preview-list">
+                {% for region in preview.regions[:4] %}
+                <article class="heat-preview-item severity-{{ region.severity }}">
+                    <div class="heat-preview-head">
+                        <strong>{{ region.name }}</strong>
+                        <span>{{ region.severity_label }}</span>
+                    </div>
+                    <div class="heat-preview-track">
+                        <span style="width: {{ region.score }}%"></span>
+                    </div>
+                    <p>{{ region.focus }}</p>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="message message-error">{{ preview_error or "Preview data is unavailable right now." }}</div>
+            {% endif %}
+        </aside>
+    </main>
+
+    <section class="donation-section" id="donationSection">
+        <div class="donation-inner">
+            <div class="donation-copy">
+                <div class="panel-kicker">Support The NGO</div>
+                <h2>Donation Interest Form</h2>
+                <p>Interested supporters can share their details here and use the QR panel to continue to the donation flow. The form card is kept on the home screen so fundraising stays visible even before login.</p>
+
+                {% if donation_success %}
+                <div class="message message-success">{{ donation_success }}</div>
+                {% endif %}
+
+                {% if donation_error %}
+                <div class="message message-error">{{ donation_error }}</div>
+                {% endif %}
+
+                <form method="POST" action="{{ url_for('donation_interest_submit') }}" class="donation-form-card">
+                    <div class="field-grid two-col">
+                        <div>
+                            <label for="donor_name">Full Name</label>
+                            <input type="text" id="donor_name" name="donor_name" placeholder="Enter full name" required>
+                        </div>
+                        <div>
+                            <label for="donor_email">Email Address</label>
+                            <input type="email" id="donor_email" name="donor_email" placeholder="Enter email address" required>
+                        </div>
+                    </div>
+
+                    <div class="field-grid two-col">
+                        <div>
+                            <label for="donor_phone">Phone Number</label>
+                            <input type="text" id="donor_phone" name="donor_phone" placeholder="Enter phone number">
+                        </div>
+                        <div>
+                            <label for="donation_amount">Planned Amount</label>
+                            <input type="text" id="donation_amount" name="donation_amount" placeholder="Enter support amount">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="donation_note">Message</label>
+                        <textarea id="donation_note" name="donation_note" rows="4" placeholder="Share how you would like to support the NGO."></textarea>
+                    </div>
+
+                    <div class="support-actions">
+                        <button type="submit" class="demo-login-btn">Submit Donation Interest</button>
+                        <a href="{{ donation_form_url }}" class="ghost-action" target="_blank" rel="noreferrer">Open Google Form</a>
+                    </div>
+                </form>
+            </div>
+
+            <aside class="donation-poster">
+                <div class="donation-poster-head">Pay using any UPI app</div>
+                <div class="upi-brand-row">
+                    <span>G Pay</span>
+                    <span>PhonePe</span>
+                    <span>Paytm</span>
+                    <span>Navi</span>
+                </div>
+                <div class="donation-qr-frame">
+                    <img src="{{ donation_qr_url }}" alt="Donation QR code" class="donation-qr-image">
+                </div>
+                <p class="donation-poster-note">This QR currently opens the donation form route. Replace the form URL in the app settings whenever your live Google Form or donation target is ready.</p>
+            </aside>
+        </div>
+    </section>
+
+    <footer class="portal-footer">
+        <div class="portal-footer-inner">
+            <div class="footer-copy">
+                <strong>Aaple Sarkar Relief Allocation Portal</strong>
+                <span>Role-based demo access for NGO and response operations</span>
+            </div>
+            <div class="footer-copy muted">
+                Admin view, user view, and emergency submission are all active
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

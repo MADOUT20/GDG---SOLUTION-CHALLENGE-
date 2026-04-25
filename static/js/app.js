@@ -32,6 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
     bindTabs();
     bindModal();
     bindForms();
+    const initialTab = getInitialTab();
+    if (initialTab) {
+        showTab(initialTab, { syncHash: false });
+    }
     loadDashboard();
 });
 
@@ -41,7 +45,24 @@ function bindTabs() {
     });
 }
 
-function showTab(tabName) {
+function getInitialTab() {
+    const requested = window.location.hash.replace("#", "").trim();
+    if (!requested) {
+        return "";
+    }
+
+    return document.getElementById(requested) ? requested : "";
+}
+
+function showTab(tabName, options = {}) {
+    if (!document.getElementById(tabName)) {
+        return;
+    }
+
+    if (options.syncHash !== false) {
+        window.history.replaceState(null, "", `#${tabName}`);
+    }
+
     document.querySelectorAll(".tab-content").forEach((panel) => {
         panel.classList.toggle("active", panel.id === tabName);
     });

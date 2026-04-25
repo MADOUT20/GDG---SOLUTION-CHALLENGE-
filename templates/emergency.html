@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Report Submission | Aaple Sarkar Relief Allocation Portal</title>
+    <meta name="description" content="Public emergency report submission page for urgent NGO and district support updates.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body class="portal-login">
+    <div class="utility-bar">
+        <div class="utility-inner">
+            <div class="utility-links">
+                <a href="#mainContent">Skip To Main Content</a>
+                <a href="{{ url_for('login_page') }}">Back To Login</a>
+                <a href="{{ url_for('dashboard_page') }}">Dashboard</a>
+            </div>
+            <div class="font-controls" aria-label="Font size controls">
+                <button type="button" class="font-btn" data-font-adjust="-1">A-</button>
+                <button type="button" class="font-btn" data-font-adjust="1">A+</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="brand-header">
+        <div class="brand-inner">
+            <div class="brand-cluster">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Relief Allocation Portal Logo" class="brand-logo">
+                <div class="brand-copy">
+                    <div class="brand-overline">Government of Maharashtra</div>
+                    <h1>Emergency Report Submission</h1>
+                    <p>Use this page to send urgent field updates directly into the response system.</p>
+                </div>
+            </div>
+
+            <div class="brand-status">
+                <div>
+                    <strong>Public Intake Route</strong>
+                    <span>Urgent reports feed the planning dashboard without requiring login</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent" class="portal-main emergency-main">
+        <section class="panel emergency-panel">
+            <div class="panel-kicker">Emergency Intake</div>
+            <h2>Submit Urgent Field Information</h2>
+            <p class="panel-intro">Provide the district, emergency type, priority, and estimated affected people so the report can be recorded immediately.</p>
+
+            {% if success %}
+            <div class="message message-success">{{ success }}</div>
+            {% endif %}
+
+            {% if error %}
+            <div class="message message-error">{{ error }}</div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('emergency_report_submit') }}" class="report-form-grid">
+                <div class="field-grid two-col">
+                    <div>
+                        <label for="reporter_name">Reporter Name</label>
+                        <input type="text" id="reporter_name" name="reporter_name" placeholder="Enter reporter name">
+                    </div>
+                    <div>
+                        <label for="organization">Organization</label>
+                        <input type="text" id="organization" name="organization" placeholder="Enter NGO or field unit">
+                    </div>
+                </div>
+
+                <div class="field-grid two-col">
+                    <div>
+                        <label for="region">Region</label>
+                        <select id="region" name="region" required>
+                            <option value="">Select region</option>
+                            {% if dashboard %}
+                                {% for region in dashboard.regions %}
+                                <option value="{{ region.name }}" {% if selected_region == region.name %}selected{% endif %}>{{ region.name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    <div>
+                        <label for="category">Emergency Category</label>
+                        <select id="category" name="category" required>
+                            <option value="Food and Rations">Food and Rations</option>
+                            <option value="Medical Aid">Medical Aid</option>
+                            <option value="Emergency Shelter">Emergency Shelter</option>
+                            <option value="Water Supply">Water Supply</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="field-grid two-col">
+                    <div>
+                        <label for="priority">Priority</label>
+                        <select id="priority" name="priority" required>
+                            <option value="High">High</option>
+                            <option value="Medium">Medium</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="people_affected">People Affected</label>
+                        <input type="number" id="people_affected" name="people_affected" min="1" value="50" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="6" placeholder="Describe the emergency situation, immediate need, and any local constraints." required></textarea>
+                </div>
+
+                <div class="support-actions">
+                    <button type="submit" class="demo-login-btn">Submit Emergency Report</button>
+                    <a href="{{ url_for('login_page') }}" class="ghost-action">Return to Login</a>
+                </div>
+            </form>
+        </section>
+
+        <aside class="panel preview-panel">
+            <div class="panel-kicker">Priority Districts</div>
+            <h2>Current Response Focus</h2>
+            {% if dashboard %}
+            <div class="heat-preview-list">
+                {% for region in dashboard.regions[:5] %}
+                <article class="heat-preview-item severity-{{ region.severity }}">
+                    <div class="heat-preview-head">
+                        <strong>{{ region.name }}</strong>
+                        <span>{{ region.severity_label }}</span>
+                    </div>
+                    <div class="heat-preview-track">
+                        <span style="width: {{ region.score }}%"></span>
+                    </div>
+                    <p>{{ region.focus }}</p>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="message message-error">{{ preview_error or "Dashboard preview is unavailable right now." }}</div>
+            {% endif %}
+        </aside>
+    </main>
+
+    <footer class="portal-footer">
+        <div class="portal-footer-inner">
+            <div class="footer-copy">
+                <strong>Aaple Sarkar Relief Allocation Portal</strong>
+                <span>Emergency reporting channel for urgent community updates</span>
+            </div>
+            <div class="footer-copy muted">
+                Public submission route
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portal | Aaple Sarkar Relief Allocation Demo</title>
+    <meta name="description" content="User-facing NGO portal closely modeled on the provided internal layout and adapted for relief operations.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/user_dashboard.css') }}">
+</head>
+<body>
+    <div class="user-utility">
+        <div class="user-utility-inner">
+            <div class="utility-links">
+                <a href="#mainContent">Skip To Main Content</a>
+                <a href="#mainNavigation">Skip To Navigation</a>
+            </div>
+            <div class="utility-right">
+                <a href="{{ url_for('login_page') }}" class="utility-home-link">Return To Home Screen</a>
+                <div class="welcome-copy">Welcome, {{ demo_user }}</div>
+                <div class="font-controls" aria-label="Font size controls">
+                    <button type="button" class="font-btn" data-font-adjust="-1">A-</button>
+                    <button type="button" class="font-btn" data-font-adjust="1">A+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="user-header">
+        <div class="user-header-inner">
+            <div class="user-brand-left">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Portal Logo" class="user-logo">
+                <div class="user-brand-text">
+                    <div class="brand-overline">Government of Maharashtra</div>
+                    <h1>आपले सरकार NGO Response Portal</h1>
+                    <p>{{ user_profile.ngo_name }} internal workspace for profile tracking, community response, and NGO support requests.</p>
+                </div>
+            </div>
+            <div class="user-header-status">
+                <strong>{{ user_profile.status }}</strong>
+                <span>{{ user_profile.registration_id }}</span>
+            </div>
+        </div>
+    </header>
+
+    <nav class="user-ribbon" id="mainNavigation" aria-label="Portal sections">
+        <div class="user-ribbon-inner">
+            <div class="ribbon-lead">NGO Services</div>
+            <button type="button" class="ribbon-item active" data-user-section="home">Home</button>
+            <button type="button" class="ribbon-item" data-user-section="profile">Profile</button>
+            <button type="button" class="ribbon-item" data-user-section="community">Community Needs</button>
+            <button type="button" class="ribbon-item" data-user-section="requests">My Requests</button>
+            <button type="button" class="ribbon-item" data-user-section="notifications">Notifications</button>
+        </div>
+    </nav>
+
+    <main class="user-shell" id="mainContent">
+        <aside class="user-sidebar">
+            <button type="button" class="sidebar-link active" data-user-section="home">Home</button>
+            <button type="button" class="sidebar-link" data-user-section="profile">Profile</button>
+            <button type="button" class="sidebar-link" data-user-section="community">Community Needs</button>
+            <button type="button" class="sidebar-link" data-user-section="requests">My Requests</button>
+            <button type="button" class="sidebar-link" data-user-section="resources">Resource Desk</button>
+            <button type="button" class="sidebar-link" data-user-section="emergency">Emergency Reports</button>
+            <button type="button" class="sidebar-link" data-user-section="grievance">Grievance / Suggestion</button>
+            <button type="button" class="sidebar-link" data-user-section="notifications">Notifications</button>
+
+            <div class="sidebar-help">
+                <a href="{{ url_for('emergency_report_page') }}" class="help-button">Emergency Report Submission</a>
+            </div>
+
+            <div class="sidebar-card">
+                <strong>{{ user_profile.ngo_name }}</strong>
+                <span>Focus district: {{ user_profile.district }}</span>
+                <span>{{ user_profile.focus_area }}</span>
+            </div>
+        </aside>
+
+        <section class="user-content">
+            {% if dashboard %}
+            <section class="user-section active" id="user-section-home">
+                <div class="content-header">
+                    <div>
+                        <h2>Organization Response Status (AY 2025-2026)</h2>
+                        <p>NGO-facing portal view aligned to the provided internal layout and cleaned for relief operations.</p>
+                    </div>
+                    <div class="header-actions">
+                        <a href="{{ url_for('emergency_report_page') }}" class="primary-action">Emergency Report Submission</a>
+                        <a href="{{ url_for('login_page') }}" class="secondary-action">Return To Home Screen</a>
+                    </div>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-head">
+                        <span>Profile Completeness</span>
+                        <strong>{{ profile_completion }}%</strong>
+                    </div>
+                    <div class="status-bar">
+                        <span style="width: {{ profile_completion }}%"></span>
+                    </div>
+                </div>
+
+                <div class="summary-row">
+                    <div class="summary-card">
+                        <span>Tracked Districts</span>
+                        <strong>{{ dashboard.summary.districts_mapped }}</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Connected Sources</span>
+                        <strong>{{ dashboard.summary.data_sources_connected }}</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Total Need</span>
+                        <strong>{{ dashboard.summary.total_needs }}</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Available Volunteers</span>
+                        <strong>{{ dashboard.summary.volunteers }}</strong>
+                    </div>
+                </div>
+
+                <div class="table-panel">
+                    <div class="table-title-row">
+                        <h3>Suggested Priority Support Areas</h3>
+                        <span>Only NGO-relevant columns are shown here.</span>
+                    </div>
+                    <table class="action-table">
+                        <thead>
+                            <tr>
+                                <th>Region</th>
+                                <th>Primary Need</th>
+                                <th>Priority</th>
+                                <th>Take Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for region in dashboard.regions[:8] %}
+                            <tr>
+                                <td>{{ region.name }}</td>
+                                <td>{{ region.focus }}</td>
+                                <td>{{ region.severity_label }}</td>
+                                <td><a href="{{ url_for('emergency_report_page') }}?region={{ region.name }}">Submit Support Note</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="user-section" id="user-section-profile">
+                <div class="section-heading">
+                    <h3>NGO Profile</h3>
+                    <p>Profile details adapted to the internal portal style and kept specific to your NGO workspace.</p>
+                </div>
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <span>NGO Name</span>
+                        <strong>{{ user_profile.ngo_name }}</strong>
+                    </div>
+                    <div class="detail-card">
+                        <span>Registration ID</span>
+                        <strong>{{ user_profile.registration_id }}</strong>
+                    </div>
+                    <div class="detail-card">
+                        <span>Coordinator</span>
+                        <strong>{{ demo_user }}</strong>
+                    </div>
+                    <div class="detail-card">
+                        <span>Focus District</span>
+                        <strong>{{ user_profile.district }}</strong>
+                    </div>
+                </div>
+                <div class="profile-story">
+                    <div class="profile-story-card">
+                        <h4>Focus Area</h4>
+                        <p>{{ user_profile.focus_area }}</p>
+                    </div>
+                    <div class="profile-story-card">
+                        <h4>Contact Desk</h4>
+                        <p>{{ user_profile.contact_email }}</p>
+                        <p>{{ user_profile.contact_phone }}</p>
+                    </div>
+                    <div class="profile-story-card">
+                        <h4>Partnership Status</h4>
+                        <p>{{ user_profile.status }}</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="user-section" id="user-section-community">
+                <div class="section-heading">
+                    <h3>Community Needs</h3>
+                    <p>Interactive region cards let NGO users scan district priorities without seeing the admin-only planning tabs.</p>
+                </div>
+                <div class="community-grid">
+                    {% for region in dashboard.regions %}
+                    <article class="community-card severity-{{ region.severity }}">
+                        <div class="community-head">
+                            <strong>{{ region.name }}</strong>
+                            <span>{{ region.severity_label }}</span>
+                        </div>
+                        <p>{{ region.focus }}</p>
+                        <div class="community-meta">
+                            <span>Needs: {{ region.needs }}</span>
+                            <span>Volunteers: {{ region.volunteers }}</span>
+                        </div>
+                        <a href="{{ url_for('emergency_report_page') }}?region={{ region.name }}" class="community-action">Report For {{ region.name }}</a>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="user-section" id="user-section-requests">
+                <div class="section-heading">
+                    <h3>My Requests</h3>
+                    <p>Request-tracking blocks keep the user portal operational without exposing admin planning tools.</p>
+                </div>
+                <div class="table-panel">
+                    <table class="action-table compact-table">
+                        <thead>
+                            <tr>
+                                <th>Request</th>
+                                <th>Region</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for region in dashboard.regions[:5] %}
+                            <tr>
+                                <td>{{ user_profile.ngo_name }} support request for {{ region.focus }}</td>
+                                <td>{{ region.name }}</td>
+                                <td>{% if loop.index0 < 2 %}In Review{% elif loop.index0 < 4 %}Action Required{% else %}Submitted{% endif %}</td>
+                                <td><a href="{{ url_for('emergency_report_page') }}?region={{ region.name }}">Update</a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="user-section" id="user-section-resources">
+                <div class="section-heading">
+                    <h3>Resource Desk</h3>
+                    <p>Available source streams and support inputs relevant for the NGO user view.</p>
+                </div>
+                <div class="resource-grid">
+                    {% for source in dashboard.sources[:6] %}
+                    <article class="resource-card">
+                        <strong>{{ source.name }}</strong>
+                        <p>{{ source.description }}</p>
+                        <span>{{ source.records }} records</span>
+                    </article>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="user-section" id="user-section-emergency">
+                <div class="section-heading">
+                    <h3>Emergency Reports</h3>
+                    <p>Use the public intake route whenever the NGO needs to escalate a district emergency immediately.</p>
+                </div>
+                <div class="emergency-callout">
+                    <div>
+                        <strong>Immediate support route</strong>
+                        <p>Submit urgent field reports for shelter, food, water, or medical aid. These updates feed the operational dashboard right away.</p>
+                    </div>
+                    <a href="{{ url_for('emergency_report_page') }}" class="primary-action">Open Emergency Submission</a>
+                </div>
+            </section>
+
+            <section class="user-section" id="user-section-grievance">
+                <div class="section-heading">
+                    <h3>Grievance / Suggestion</h3>
+                    <p>Simple internal panel for issue reporting and operational suggestions.</p>
+                </div>
+                <div class="grievance-panel">
+                    <div class="profile-story-card">
+                        <h4>Support Contacts</h4>
+                        <p>{{ user_profile.contact_email }}</p>
+                        <p>{{ user_profile.contact_phone }}</p>
+                    </div>
+                    <div class="profile-story-card">
+                        <h4>Suggested escalation route</h4>
+                        <p>Use the emergency page for urgent action and the notifications panel for follow-up status.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="user-section" id="user-section-notifications">
+                <div class="section-heading">
+                    <h3>Notifications</h3>
+                    <p>Recent updates and logged activity relevant to the NGO user role.</p>
+                </div>
+                <div class="table-panel">
+                    <table class="action-table compact-table">
+                        <thead>
+                            <tr>
+                                <th>Update</th>
+                                <th>Detail</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for activity in dashboard.activities[:6] %}
+                            <tr>
+                                <td>{{ activity.title }}</td>
+                                <td>{{ activity.detail }}</td>
+                                <td>{{ activity.display_time }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            {% else %}
+            <div class="empty-panel">
+                <h2>Dashboard data is unavailable</h2>
+                <p>{{ dashboard_error or "The user portal could not load the current NGO dashboard data." }}</p>
+            </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer class="user-footer">
+        <div class="user-footer-inner">
+            <div class="footer-copy">
+                <strong>Aaple Sarkar NGO Response Portal</strong>
+                <span>User-facing internal dashboard for NGO operations</span>
+            </div>
+            <div class="footer-copy">NGO: {{ user_profile.ngo_name }} | Demo ID: {{ demo_login }}</div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/user_dashboard.js') }}"></script>
+</body>
+</html>

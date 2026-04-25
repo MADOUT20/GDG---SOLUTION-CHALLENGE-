@@ -3,175 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NGO Hub | Smart Resource Allocation</title>
+    <title>Admin Dashboard | Aaple Sarkar Relief Allocation Portal</title>
+    <meta name="description" content="Admin-only NGO operations workspace styled to align with the user portal while keeping restricted planning tools.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_dashboard.css') }}">
 </head>
-<body>
-    <div class="top-bar">
-        <div class="logo-section">
-            <div class="emblem">NG</div>
-            <div class="org-title">
-                <div class="org-title-en">Social Welfare Department</div>
-                <div class="org-title-hi">Apale Sarkar</div>
-                <div class="org-title-main">NGO Hub</div>
+<body class="admin-page">
+    <div class="admin-utility">
+        <div class="admin-utility-inner">
+            <div class="utility-links">
+                <a href="#mainContent">Skip To Main Content</a>
+                <a href="#adminSidebar">Skip To Navigation</a>
             </div>
-            <div class="tagline">Data-driven volunteer coordination for social impact</div>
+            <div class="admin-utility-right">
+                <a href="{{ url_for('login_page') }}" class="utility-home-link">Return To Home Screen</a>
+                <div class="welcome-copy">Welcome, {{ demo_user }}</div>
+                <div class="font-controls" aria-label="Font size controls">
+                    <button type="button" class="font-btn" data-font-adjust="-1">A-</button>
+                    <button type="button" class="font-btn" data-font-adjust="1">A+</button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="header-nav">
-        <button class="nav-item active" data-tab="problem">The Problem</button>
-        <button class="nav-item" data-tab="solution">Our Solution</button>
-        <button class="nav-item" data-tab="aggregate">Aggregate Data</button>
-        <button class="nav-item" data-tab="heatmap">View Heatmap</button>
-        <button class="nav-item" data-tab="allocate">Smart Allocation</button>
-        <button class="nav-item" data-tab="impact">Track Impact</button>
-    </div>
-
-    <div class="main-container">
-        <aside class="left-sidebar">
-            <div class="sidebar-box">
-                <div class="sidebar-header">The Challenge</div>
-                <div class="sidebar-content">
-                    <div class="problem-box">
-                        <div class="problem-title">Data scattered</div>
-                        <div class="problem-text">Paper surveys, sheets, and field notes live in separate places with no shared view.</div>
-                    </div>
-                    <div class="problem-box">
-                        <div class="problem-title">No visibility</div>
-                        <div class="problem-text">Coordinators cannot quickly see which districts need people and supplies most.</div>
-                    </div>
-                    <div class="problem-box">
-                        <div class="problem-title">Poor allocation</div>
-                        <div class="problem-text">Teams get deployed late or unevenly, and impact is hard to measure.</div>
-                    </div>
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <div class="admin-brand-left">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Portal Logo" class="admin-logo">
+                <div class="admin-brand-text">
+                    <div class="brand-overline">Government of Maharashtra</div>
+                    <h1>आपले सरकार Admin Operations Portal</h1>
+                    <p>Restricted workspace for district planning, SRAS heatmap review, resource allocation, and NGO profile supervision.</p>
                 </div>
             </div>
+            <div class="admin-header-status">
+                <strong>Admin Access Active</strong>
+                <span>{{ demo_login }}</span>
+            </div>
+        </div>
+    </header>
 
-            <div class="sidebar-box">
-                <div class="sidebar-header">UI Synthesis</div>
-                <div class="sidebar-content">
-                    <div class="solution-box">
-                        <div class="solution-title">SRAS strengths</div>
-                        <div class="solution-text">Action-oriented flows like field reports, donations, and deployment updates.</div>
-                    </div>
-                    <div class="solution-box">
-                        <div class="solution-title">NGO UI strengths</div>
-                        <div class="solution-text">Cleaner storytelling, friendlier colors, and easier presentation for the challenge.</div>
-                    </div>
-                    <div class="solution-box">
-                        <div class="solution-title">What changed</div>
-                        <div class="solution-text">This Flask version keeps your NGO look while making the SRAS-style actions real.</div>
-                    </div>
-                </div>
+    <section class="admin-ribbon">
+        <div class="admin-ribbon-inner">
+            <div class="ribbon-lead">Admin Services</div>
+            <div class="ribbon-info-card">
+                <strong>Restricted tools</strong>
+                <span>SRAS Heatmap, Smart Allocation, Impact Desk</span>
+            </div>
+            <div class="ribbon-info-card">
+                <strong>NGO on file</strong>
+                <span>{{ ngo_profile.ngo_name }}</span>
+            </div>
+            <div class="ribbon-info-card">
+                <strong>Focus district</strong>
+                <span>{{ ngo_profile.district }}</span>
+            </div>
+        </div>
+    </section>
+
+    <main class="admin-shell" id="mainContent">
+        <aside class="admin-sidebar" id="adminSidebar">
+            <button type="button" class="sidebar-link active" data-tab="overview">Overview</button>
+            <button type="button" class="sidebar-link" data-tab="aggregate">Aggregate Data</button>
+            <button type="button" class="sidebar-link" data-tab="heatmap">SRAS Heatmap</button>
+            <button type="button" class="sidebar-link" data-tab="allocate">Smart Allocation</button>
+            <button type="button" class="sidebar-link" data-tab="impact">Impact Desk</button>
+            <button type="button" class="sidebar-link" data-tab="ngo-profile">NGO Profile</button>
+
+            <div class="sidebar-help">
+                <a href="{{ url_for('emergency_report_page') }}" class="help-button">Emergency Report Submission</a>
+            </div>
+
+            <div class="sidebar-card">
+                <strong>{{ ngo_profile.ngo_name }}</strong>
+                <span>{{ ngo_profile.registration_id }}</span>
+                <span>{{ ngo_profile.focus_area }}</span>
             </div>
         </aside>
 
-        <main class="center-content">
-            <div class="alert-banner">
-                <strong>Goal:</strong> turn scattered community information into one live planning view for volunteer deployment and resource coordination.
-            </div>
-
-            <div class="tabs-container">
-                <button class="tab active" data-tab="problem">Problem</button>
-                <button class="tab" data-tab="solution">Solution</button>
-                <button class="tab" data-tab="aggregate">Aggregate</button>
-                <button class="tab" data-tab="heatmap">Heatmap</button>
-                <button class="tab" data-tab="allocate">Allocate</button>
-                <button class="tab" data-tab="impact">Impact</button>
-            </div>
-
-            <section id="problem" class="tab-content active">
+        <section class="admin-content">
+            <section id="overview" class="tab-content active">
                 <div class="content-header">
-                    <h2>The Core Problem</h2>
-                    <p>Why NGOs struggle with resource allocation</p>
-                </div>
-
-                <div class="panel-body">
-                    <div class="problem-flow">
-                        <div class="problem-item">
-                            <div class="problem-item-title">Collect</div>
-                            <div class="problem-item-desc">Field workers gather community needs across different formats.</div>
-                        </div>
-                        <div class="arrow-box">to</div>
-                        <div class="problem-item">
-                            <div class="problem-item-title">Fragment</div>
-                            <div class="problem-item-desc">Information gets trapped in sheets, messages, and isolated reports.</div>
-                        </div>
-                        <div class="arrow-box">to</div>
-                        <div class="problem-item">
-                            <div class="problem-item-title">Delay</div>
-                            <div class="problem-item-desc">Leaders make deployment calls without a live district-wide picture.</div>
-                        </div>
+                    <div>
+                        <h2>Admin Overview</h2>
+                        <p>Operational summary of the challenge system, aligned visually with the user workspace.</p>
                     </div>
-
-                    <div class="compare-grid">
-                        <div class="compare-card danger">
-                            <h3>What SRAS already did well</h3>
-                            <p>It felt operational. Reports, donations, and command actions were easy to imagine in a live control room.</p>
-                        </div>
-                        <div class="compare-card success">
-                            <h3>What your NGO UI did better</h3>
-                            <p>It explains the problem, solution, and impact more clearly, which makes it stronger for demos and judging.</p>
-                        </div>
-                    </div>
-
-                    <div class="note-card warning">
-                        <strong>Result:</strong> this version keeps the NGO presentation style but adds the SRAS-style backend actions so the interface is not static anymore.
+                    <div class="header-actions">
+                        <a href="{{ url_for('emergency_report_page') }}" class="primary-action">Emergency Report Submission</a>
+                        <a href="{{ url_for('login_page') }}" class="secondary-action">Return To Home Screen</a>
                     </div>
                 </div>
-            </section>
 
-            <section id="solution" class="tab-content">
-                <div class="content-header">
-                    <h2>Solution Framework</h2>
-                    <p>How the new Flask-backed version works</p>
+                <div class="status-card">
+                    <div class="status-head">
+                        <span>Admin Readiness</span>
+                        <strong>100%</strong>
+                    </div>
+                    <div class="status-bar">
+                        <span style="width: 100%"></span>
+                    </div>
                 </div>
 
-                <div class="panel-body">
-                    <div class="solution-flow">
-                        <div class="solution-item">
-                            <div class="solution-item-title">Consolidate</div>
-                            <div class="solution-item-desc">Bring every data stream into one database-ready data layer managed by Flask.</div>
-                        </div>
-                        <div class="arrow-box positive">to</div>
-                        <div class="solution-item">
-                            <div class="solution-item-title">Visualize</div>
-                            <div class="solution-item-desc">Render the source mix, hotspot scores, and allocation gaps from the backend.</div>
-                        </div>
-                        <div class="arrow-box positive">to</div>
-                        <div class="solution-item">
-                            <div class="solution-item-title">Act</div>
-                            <div class="solution-item-desc">Log reports, donations, deployments, and new source batches from the UI.</div>
-                        </div>
-                        <div class="arrow-box positive">to</div>
-                        <div class="solution-item">
-                            <div class="solution-item-title">Measure</div>
-                            <div class="solution-item-desc">Refresh impact metrics and recent activity after every action.</div>
-                        </div>
+                <div class="summary-row admin-summary-row">
+                    <div class="summary-card">
+                        <span>Districts</span>
+                        <strong id="summaryDistricts">0</strong>
                     </div>
+                    <div class="summary-card">
+                        <span>Coverage</span>
+                        <strong id="summaryCoverage">0%</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Volunteers</span>
+                        <strong id="summaryVolunteers">0</strong>
+                    </div>
+                    <div class="summary-card">
+                        <span>Reports Today</span>
+                        <strong id="summaryReports">0</strong>
+                    </div>
+                </div>
 
-                    <div class="feature-list-card">
-                        <div class="feature-pill">Flask routing</div>
-                        <div class="feature-pill">Supabase-ready storage</div>
-                        <div class="feature-pill">Live dashboard API</div>
-                        <div class="feature-pill">Field report form</div>
-                        <div class="feature-pill">Donation logging</div>
-                        <div class="feature-pill">Volunteer deployment updates</div>
+                <div class="profile-story">
+                    <div class="profile-story-card">
+                        <h4>Admin Priority</h4>
+                        <p>Monitor district pressure, intake fresh records, and push resources where the need score is highest.</p>
+                    </div>
+                    <div class="profile-story-card">
+                        <h4>Restricted Tools</h4>
+                        <p>Only admin can access the SRAS Heatmap, Smart Allocation, and Impact Desk from this workspace.</p>
+                    </div>
+                    <div class="profile-story-card">
+                        <h4>NGO Supervision</h4>
+                        <p>Review the NGO profile and current district focus before response actions are logged.</p>
                     </div>
                 </div>
             </section>
 
             <section id="aggregate" class="tab-content">
-                <div class="content-header">
-                    <h2>Step 1: Aggregate Data</h2>
-                    <p>Consolidate scattered community inputs</p>
+                <div class="section-heading">
+                    <h3>Aggregate Data</h3>
+                    <p>Consolidate NGO and district records before analysis.</p>
                 </div>
-
-                <div class="panel-body">
-                    <div class="section-toolbar">
-                        <div class="toolbar-text">Each card below is backed by the Flask data layer.</div>
+                <div class="table-panel">
+                    <div class="table-title-row">
+                        <h3>Connected Source Streams</h3>
+                        <span>Each source below is backed by the connected Flask data layer.</span>
+                    </div>
+                    <div class="section-toolbar admin-toolbar">
+                        <div class="toolbar-text">Use this panel to add new record batches to the planning view.</div>
                         <button class="primary-btn" data-modal-target="source">Add Data Batch</button>
                     </div>
                     <div id="sourceGrid" class="data-source-grid"></div>
@@ -180,12 +163,11 @@
             </section>
 
             <section id="heatmap" class="tab-content">
-                <div class="content-header">
-                    <h2>Step 2: District Heatmap View</h2>
-                    <p>See where need intensity is highest</p>
+                <div class="section-heading">
+                    <h3>SRAS Heatmap</h3>
+                    <p>Admin-only hotspot view for Maharashtra district prioritization.</p>
                 </div>
-
-                <div class="panel-body">
+                <div class="table-panel map-panel">
                     <div class="legend-row">
                         <div class="legend-item"><span class="legend-swatch critical"></span> Critical</div>
                         <div class="legend-item"><span class="legend-swatch high"></span> High</div>
@@ -198,13 +180,12 @@
             </section>
 
             <section id="allocate" class="tab-content">
-                <div class="content-header">
-                    <h2>Step 3: Smart Volunteer Allocation</h2>
-                    <p>Deploy people using live district deficits</p>
+                <div class="section-heading">
+                    <h3>Smart Allocation</h3>
+                    <p>Admin-only volunteer deployment guidance.</p>
                 </div>
-
-                <div class="panel-body">
-                    <div class="section-toolbar">
+                <div class="table-panel">
+                    <div class="section-toolbar admin-toolbar">
                         <div class="toolbar-text">Recommendations update whenever a report, donation, or deployment is submitted.</div>
                         <button class="primary-btn" data-modal-target="deployment">Deploy Volunteers</button>
                     </div>
@@ -225,14 +206,13 @@
             </section>
 
             <section id="impact" class="tab-content">
-                <div class="content-header">
-                    <h2>Step 4: Track Impact</h2>
-                    <p>Measure outcomes after actions are logged</p>
+                <div class="section-heading">
+                    <h3>Impact Desk</h3>
+                    <p>Admin-only view for action logging and measurable change.</p>
                 </div>
-
-                <div class="panel-body">
-                    <div class="section-toolbar">
-                        <div class="toolbar-text">These actions bring the best SRAS features into your preferred NGO interface.</div>
+                <div class="table-panel">
+                    <div class="section-toolbar admin-toolbar">
+                        <div class="toolbar-text">Log response actions and refresh the impact view.</div>
                         <div class="button-cluster">
                             <button class="primary-btn" data-modal-target="report">Log Field Report</button>
                             <button class="secondary-btn" data-modal-target="donation">Register Donation</button>
@@ -242,11 +222,11 @@
                     <div class="impact-story">
                         <div class="impact-card before">
                             <h3>Before</h3>
-                            <p>Static files, weak district visibility, and random deployment decisions.</p>
+                            <p>Scattered data and delayed district response decisions.</p>
                         </div>
                         <div class="impact-card after">
                             <h3>After</h3>
-                            <p>One Flask-backed control surface that keeps coordination, reporting, and deployment in sync.</p>
+                            <p>One admin surface for reporting, resource coordination, and measurable outcomes.</p>
                         </div>
                     </div>
 
@@ -263,21 +243,73 @@
                     </table>
                 </div>
             </section>
-        </main>
 
-        <aside class="right-sidebar">
+            <section id="ngo-profile" class="tab-content">
+                <div class="section-heading">
+                    <h3>NGO Profile</h3>
+                    <p>Organization-level profile information is maintained here in the admin workspace.</p>
+                </div>
+
+                <div class="detail-grid">
+                    <div class="detail-card">
+                        <span>NGO Name</span>
+                        <strong>{{ ngo_profile.ngo_name }}</strong>
+                    </div>
+                    <div class="detail-card">
+                        <span>Registration ID</span>
+                        <strong>{{ ngo_profile.registration_id }}</strong>
+                    </div>
+                    <div class="detail-card">
+                        <span>Focus District</span>
+                        <strong>{{ ngo_profile.district }}</strong>
+                    </div>
+                    <div class="detail-card">
+                        <span>Status</span>
+                        <strong>{{ ngo_profile.status }}</strong>
+                    </div>
+                </div>
+
+                <div class="profile-story">
+                    <div class="profile-story-card">
+                        <h4>Focus Area</h4>
+                        <p>{{ ngo_profile.focus_area }}</p>
+                    </div>
+                    <div class="profile-story-card">
+                        <h4>Contact Email</h4>
+                        <p>{{ ngo_profile.contact_email }}</p>
+                    </div>
+                    <div class="profile-story-card">
+                        <h4>Contact Phone</h4>
+                        <p>{{ ngo_profile.contact_phone }}</p>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <aside class="admin-rightbar">
             <div class="right-box">
                 <div class="right-header">Current Status</div>
                 <div id="statusList" class="right-content"></div>
             </div>
 
             <div class="right-box">
-                <div class="right-header">Operations Desk</div>
+                <div class="right-header right-header-accent">Operations Desk</div>
                 <div class="right-content operations-panel">
-                    <button class="operation-btn" data-modal-target="report">Field report</button>
-                    <button class="operation-btn" data-modal-target="donation">Donation</button>
-                    <button class="operation-btn" data-modal-target="deployment">Deployment</button>
-                    <button class="operation-btn" data-modal-target="source">Data batch</button>
+                    <button class="quick-link-btn" data-modal-target="report">
+                        <span class="ql-label">Log Field Report</span>
+                    </button>
+                    <button class="quick-link-btn" data-modal-target="donation">
+                        <span class="ql-label">Register Donation</span>
+                    </button>
+                    <button class="quick-link-btn" data-modal-target="deployment">
+                        <span class="ql-label">Deploy Volunteers</span>
+                    </button>
+                    <button class="quick-link-btn" data-modal-target="source">
+                        <span class="ql-label">Add Data Batch</span>
+                    </button>
+                    <a href="{{ url_for('login_page') }}" class="quick-link-btn quick-link-anchor">
+                        <span class="ql-label">Return To Home Screen</span>
+                    </a>
                     <div id="flashMessage" class="flash-message hidden"></div>
                 </div>
             </div>
@@ -288,11 +320,21 @@
             </div>
 
             <div class="right-box">
-                <div class="right-header">Solution Benefits</div>
+                <div class="right-header right-header-green">Solution Benefits</div>
                 <div id="benefitsList" class="right-content"></div>
             </div>
         </aside>
-    </div>
+    </main>
+
+    <footer class="admin-footer">
+        <div class="admin-footer-inner">
+            <div class="footer-copy">
+                <strong>Aaple Sarkar Admin Operations Portal</strong>
+                <span>Admin-facing workspace aligned with the NGO user layout</span>
+            </div>
+            <div class="footer-copy">NGO on file: {{ ngo_profile.ngo_name }}</div>
+        </div>
+    </footer>
 
     <div id="modalOverlay" class="modal-overlay hidden">
         <div class="modal-card">
@@ -368,7 +410,9 @@
         </div>
     </div>
 
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
     <script src="{{ url_for('static', filename='js/india_map.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </body>

@@ -33,6 +33,14 @@ textarea {
     gap: 15px;
 }
 
+.logo-image {
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 61, 107, 0.14);
+    height: 56px;
+    object-fit: cover;
+    width: 56px;
+}
+
 .emblem {
     align-items: center;
     background: #003d6b;
@@ -79,6 +87,34 @@ textarea {
     padding-left: 20px;
 }
 
+.top-bar-right {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+}
+
+.admin-home-link {
+    background: #ff9800;
+    border-radius: 999px;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 8px 12px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.demo-access-pill {
+    background: #003d6b;
+    border-radius: 999px;
+    box-shadow: 0 10px 18px rgba(0, 61, 107, 0.12);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 8px 12px;
+    white-space: nowrap;
+}
+
 .header-nav {
     background: #003d6b;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
@@ -102,6 +138,41 @@ textarea {
 .nav-item:hover,
 .nav-item.active {
     background: #ff9800;
+}
+
+.nav-icon {
+    margin-right: 4px;
+}
+
+.alert-marquee-wrap {
+    background: linear-gradient(90deg, #fff8df 0%, #ffefbf 100%);
+    border-bottom: 1px solid #f0d58a;
+    border-top: 1px solid #f6e5b2;
+    overflow: hidden;
+}
+
+.alert-marquee {
+    overflow: hidden;
+    padding: 11px 0;
+    white-space: nowrap;
+}
+
+.marquee-text {
+    animation: marqueeMove 30s linear infinite;
+    color: #8b5a00;
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    padding-left: 100%;
+}
+
+@keyframes marqueeMove {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
 }
 
 .main-container {
@@ -158,6 +229,19 @@ textarea {
     background: #003d6b;
 }
 
+.sidebar-header-green {
+    background: #4caf50;
+}
+
+.sidebar-header-blue {
+    background: #003d6b;
+}
+
+.sidebar-header-icon,
+.right-header-icon {
+    margin-right: 6px;
+}
+
 .sidebar-content,
 .right-content {
     font-size: 12px;
@@ -212,12 +296,33 @@ textarea {
     font-size: 11px;
 }
 
+.sidebar-notice ul,
+.notice-list {
+    padding-left: 18px;
+}
+
+.notice-list li {
+    margin-bottom: 6px;
+}
+
 .alert-banner {
     background: #fff3cd;
     border: 1px solid #ffc107;
     border-left: 4px solid #c62828;
     color: #856404;
     font-size: 12px;
+    margin: 10px;
+    padding: 12px 15px;
+}
+
+.welcome-banner {
+    background: #eaf2fb;
+    border: 1px solid #c3d7ec;
+    border-left: 4px solid #003d6b;
+    border-radius: 4px;
+    color: #003d6b;
+    font-size: 12px;
+    line-height: 1.7;
     margin: 10px;
     padding: 12px 15px;
 }
@@ -732,6 +837,53 @@ textarea {
     color: #c62828;
 }
 
+.right-header-accent {
+    background: #ff9800;
+}
+
+.right-header-green {
+    background: #4caf50;
+}
+
+.operations-panel {
+    display: grid;
+    gap: 10px;
+}
+
+.quick-link-btn {
+    align-items: center;
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    border-left: 4px solid #ff9800;
+    border-radius: 4px;
+    color: #003d6b;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    padding: 11px 12px;
+    text-align: left;
+    transition: background 0.2s ease, transform 0.2s ease;
+    width: 100%;
+}
+
+.quick-link-btn:hover {
+    background: #fff8eb;
+    transform: translateX(2px);
+}
+
+.quick-link-anchor {
+    text-decoration: none;
+}
+
+.ql-icon {
+    font-size: 16px;
+}
+
+.ql-label {
+    font-size: 12px;
+    font-weight: 700;
+}
+
 .hidden {
     display: none !important;
 }
@@ -818,7 +970,7 @@ textarea {
     border: 1px solid #d0d7de;
     position: relative;
     background: #e8edf2;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Marker wrapper – Leaflet requires these overrides */
@@ -827,39 +979,55 @@ textarea {
     border: none !important;
 }
 
-.map-marker-dot {
-    width: 18px;
-    height: 18px;
+/* Numbered badge marker */
+.map-badge {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border: 2.5px solid #fff;
-    z-index: 2;
-    transition: transform 0.22s ease;
+    border: 2.5px solid;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease;
 }
 
-.map-marker-wrapper:hover .map-marker-dot {
-    transform: translate(-50%, -50%) scale(1.35);
+.map-badge span {
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.map-marker-pulse {
-    width: 40px;
-    height: 40px;
+.map-marker-wrapper:hover .map-badge {
+    transform: translate(-50%, -50%) scale(1.25);
+}
+
+/* Pulsing ring around badge */
+.map-badge-ring {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
+    border: 3px solid;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    animation: mPulse 2.2s ease-out infinite;
+    animation: badgePulse 2s ease-out infinite;
     z-index: 1;
+    opacity: 0.6;
 }
 
-@keyframes mPulse {
-    0%   { transform: translate(-50%, -50%) scale(0.45); opacity: 1; }
-    100% { transform: translate(-50%, -50%) scale(1.6);  opacity: 0; }
+@keyframes badgePulse {
+    0%   { transform: translate(-50%, -50%) scale(0.7); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
 }
 
 /* ----- Custom Popup (glassmorphism) ----- */
@@ -1042,6 +1210,32 @@ textarea {
     padding: 2px 6px;
 }
 
+.site-footer {
+    background: #0d2847;
+    color: #fff;
+}
+
+.footer-inner {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1440px;
+    padding: 16px 20px;
+}
+
+.footer-left,
+.footer-center,
+.footer-right {
+    font-size: 12px;
+}
+
+.footer-center,
+.footer-right {
+    color: rgba(255, 255, 255, 0.78);
+}
+
 @media (max-width: 1120px) {
     .main-container {
         grid-template-columns: 200px minmax(0, 1fr) 280px;
@@ -1060,6 +1254,17 @@ textarea {
     .left-sidebar,
     .right-sidebar {
         display: none;
+    }
+
+    .top-bar {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .top-bar-right {
+        align-items: flex-start;
+        flex-direction: column;
     }
 
     .section-toolbar {
@@ -1088,5 +1293,10 @@ textarea {
     .allocation-table {
         display: block;
         overflow-x: auto;
+    }
+
+    .footer-inner {
+        align-items: flex-start;
+        flex-direction: column;
     }
 }
