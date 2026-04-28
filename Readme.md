@@ -17,7 +17,7 @@ RahatSetu is an NGO Crisis Portal designed to modernize the interface and backen
 
 You can try out the application locally by logging into the admin console with the default credentials:
 
-- **URL:** `http://127.0.0.1:5000/login`
+- **URL:** https://gdg-solution-challenge-jade.vercel.app/
 - **Admin Email:** `admin@rahatsetu.org`
 - **Admin Password:** `admin123`
 
