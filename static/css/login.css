@@ -888,3 +888,129 @@ textarea {
         padding: 18px;
     }
 }
+
+/* Auth tabs - Sign In / Sign Up */
+.auth-tabs {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 20px;
+}
+
+.auth-tab {
+    background: #fff;
+    border: 1px solid #cfdae6;
+    border-radius: 18px;
+    cursor: pointer;
+    display: grid;
+    gap: 6px;
+    padding: 16px;
+    text-align: left;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    color: var(--portal-muted);
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.auth-tab.active {
+    border-color: var(--portal-orange);
+    box-shadow: 0 16px 26px rgba(15, 59, 102, 0.08);
+    transform: translateY(-1px);
+    color: var(--portal-blue);
+}
+
+.auth-tab:hover:not(.active) {
+    border-color: var(--portal-blue);
+    color: var(--portal-blue);
+}
+
+/* Admin Login Section */
+.admin-login-section {
+    background: linear-gradient(135deg, #1e3a5f 0%, #0f2744 100%);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px 0;
+    color: #fff;
+}
+
+.admin-login-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.admin-badge {
+    background: var(--portal-orange);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-login-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.admin-login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.admin-login-form label {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.admin-login-form input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 0.95rem;
+    padding: 12px 14px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.admin-login-form input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.admin-login-form input:focus {
+    border-color: var(--portal-orange);
+    background: rgba(255, 255, 255, 0.15);
+    outline: none;
+}
+
+.admin-login-btn {
+    background: var(--portal-orange);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-top: 8px;
+    padding: 14px;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.admin-login-btn:hover {
+    background: #d4550a;
+    transform: translateY(-1px);
+}
+
+.admin-note {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    margin-top: 10px;
+    text-align: center;
+}

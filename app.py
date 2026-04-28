@@ -4,8 +4,14 @@ from copy import deepcopy
 from datetime import datetime
 from threading import Lock
 from urllib.parse import quote
+import hashlib
 
 from flask import Flask, jsonify, redirect, render_template, request, session
+
+import json as json_lib
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
 
 from storage import StorageError, create_store
 
@@ -14,7 +20,6 @@ try:
 except ImportError:
     def load_dotenv() -> bool:
         return False
-
 
 load_dotenv()
 
@@ -278,6 +283,7 @@ def login_page_context(
     selected_role: str = DEFAULT_ROLE,
     donation_success: str | None = None,
     donation_error: str | None = None,
+    success_message: str | None = None,
 ) -> dict:
     preview = None
     preview_error = None
@@ -300,6 +306,7 @@ def login_page_context(
         "donation_error": donation_error,
         "donation_form_url": DONATION_FORM_URL,
         "donation_qr_url": donation_qr_url(),
+        "success_message": success_message,
     }
 
 
@@ -344,6 +351,69 @@ def user_portal_context() -> dict:
     }
 
 
+# User authentication
+USER_STORE_PATH = BASE_DIR / "data" / "users.json"
+
+def _load_users() -> dict:
+    if USER_STORE_PATH.exists():
+        with USER_STORE_PATH.open() as f:
+            return json_lib.load(f)
+    return {}
+
+def _save_users(users: dict) -> None:
+    with USER_STORE_PATH.open("w") as f:
+        json_lib.dump(users, f, indent=2)
+
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def verify_user(email: str, password: str) -> dict | None:
+    users = _load_users()
+    hashed = hash_password(password)
+    for uid, udata in users.items():
+        if udata.get("email", "").lower() == email.lower() and udata.get("password") == hashed:
+            return udata
+    return None
+
+
+# Admin authentication
+ADMIN_STORE_PATH = BASE_DIR / "data" / "admins.json"
+
+def _load_admins() -> dict:
+    if ADMIN_STORE_PATH.exists():
+        with ADMIN_STORE_PATH.open() as f:
+            return json_lib.load(f)
+    return {}
+
+def _save_admins(admins: dict) -> None:
+    with ADMIN_STORE_PATH.open("w") as f:
+        json_lib.dump(admins, f, indent=2)
+
+def verify_admin(email: str, password: str) -> dict | None:
+    admins = _load_admins()
+    hashed = hash_password(password)
+    for aid, adata in admins.items():
+        if adata.get("email", "").lower() == email.lower() and adata.get("password") == hashed:
+            return adata
+    return None
+
+def _ensure_default_admin():
+    """Create default admin if no admins exist"""
+    admins = _load_admins()
+    if not admins:
+        admins["admin-001"] = {
+            "email": "admin@rahatsetu.org",
+            "password": hash_password("admin123"),
+            "full_name": "Admin Console",
+            "role": "admin",
+            "created_at": now_iso(),
+        }
+        _save_admins(admins)
+
+# Call on startup
+_ensure_default_admin()
+
+
 @app.get("/")
 def index() -> str:
     donation_state = request.args.get("donation", "").strip().lower()
@@ -365,7 +435,7 @@ def dashboard_page() -> str:
     role = normalize_role(session.get("role"))
     profile = default_profile(role)
 
-    if role == "admin":
+    if role == "admin" and session.get("is_admin"):
         return render_template(
             "index.html",
             demo_user=session.get("user", profile["display_name"]),
@@ -401,21 +471,112 @@ def login_page() -> str:
 
 @app.post("/login")
 def login_submit():
-    role = normalize_role(request.form.get("role"))
-    profile = default_profile(role)
-    username = request.form.get("username", "").strip() or profile["username"]
+    email = request.form.get("email", "").strip()
+    password = request.form.get("password", "").strip()
     captcha = request.form.get("captcha", "").strip()
 
     if not captcha:
         return render_template(
             "login.html",
-            **login_page_context(error="Please complete the captcha to continue.", selected_role=role),
+            **login_page_context(error="Please complete the captcha to continue."),
         )
 
-    session["role"] = role
-    session["user"] = profile["display_name"]
-    session["demo_username"] = username
-    return redirect(profile["landing"])
+    if not email or not password:
+        return render_template(
+            "login.html",
+            **login_page_context(error="Please enter your email and password."),
+        )
+
+    user = verify_user(email, password)
+    if not user:
+        return render_template(
+            "login.html",
+            **login_page_context(error="Invalid email or password."),
+        )
+
+    session["role"] = user.get("role", "user")
+    session["user"] = user.get("full_name", email.split("@")[0])
+    session["user_id"] = user.get("id")
+    session["demo_username"] = email
+    return redirect("/dashboard")
+
+
+@app.post("/admin/login")
+def admin_login_submit():
+    email = request.form.get("email", "").strip()
+    password = request.form.get("password", "").strip()
+
+    if not email or not password:
+        return render_template(
+            "login.html",
+            **login_page_context(error="Please enter admin email and password."),
+        )
+
+    admin = verify_admin(email, password)
+    if not admin:
+        return render_template(
+            "login.html",
+            **login_page_context(error="Invalid admin credentials."),
+        )
+
+    session["role"] = "admin"
+    session["is_admin"] = True
+    session["user"] = admin.get("full_name", email.split("@")[0])
+    session["user_id"] = admin.get("id")
+    session["demo_username"] = email
+    return redirect("/dashboard")
+
+
+@app.post("/signup")
+def signup_submit():
+    email = request.form.get("email", "").strip()
+    password = request.form.get("password", "").strip()
+    full_name = request.form.get("full_name", "").strip()
+    confirm_password = request.form.get("confirm_password", "").strip()
+
+    if not email or not password or not full_name:
+        return render_template(
+            "login.html",
+            **login_page_context(error="All fields are required."),
+        )
+
+    if password != confirm_password:
+        return render_template(
+            "login.html",
+            **login_page_context(error="Passwords do not match."),
+        )
+
+    if len(password) < 6:
+        return render_template(
+            "login.html",
+            **login_page_context(error="Password must be at least 6 characters."),
+        )
+
+    users = _load_users()
+
+    for uid, udata in users.items():
+        if udata.get("email", "").lower() == email.lower():
+            return render_template(
+                "login.html",
+                **login_page_context(error="An account with this email already exists."),
+            )
+
+    hashed = hash_password(password)
+    import uuid
+    uid = str(uuid.uuid4())[:8]
+    users[uid] = {
+        "email": email,
+        "password": hashed,
+        "full_name": full_name,
+        "role": "user",
+        "created_at": now_iso(),
+    }
+    _save_users(users)
+
+    return render_template(
+        "login.html",
+        **login_page_context(success_message="Account created successfully! Please sign in."),
+    )
 
 
 @app.get("/logout")

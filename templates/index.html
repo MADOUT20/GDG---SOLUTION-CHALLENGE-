@@ -103,19 +103,19 @@
                 <div class="summary-row admin-summary-row">
                     <div class="summary-card">
                         <span>Districts</span>
-                        <strong id="summaryDistricts">0</strong>
+                        <strong id="summaryDistricts">-</strong>
                     </div>
                     <div class="summary-card">
                         <span>Coverage</span>
-                        <strong id="summaryCoverage">0%</strong>
+                        <strong id="summaryCoverage">-</strong>
                     </div>
                     <div class="summary-card">
                         <span>Volunteers</span>
-                        <strong id="summaryVolunteers">0</strong>
+                        <strong id="summaryVolunteers">-</strong>
                     </div>
                     <div class="summary-card">
                         <span>Reports Today</span>
-                        <strong id="summaryReports">0</strong>
+                        <strong id="summaryReports">-</strong>
                     </div>
                 </div>
 
@@ -434,5 +434,163 @@
     <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
     <script src="{{ url_for('static', filename='js/india_map.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load dashboard data from API
+        loadDashboardData();
+        
+        // Refresh data every 30 seconds
+        setInterval(loadDashboardData, 30000);
+    });
+
+    async function loadDashboardData() {
+        try {
+            const response = await fetch('/api/dashboard');
+            if (!response.ok) throw new Error('Failed to load dashboard');
+            const data = await response.json();
+            updateOverview(data);
+            updateAggregate(data);
+            updateAllocation(data);
+            updateImpact(data);
+            updateActivityFeed(data);
+            updateBenefits(data);
+        } catch (error) {
+            console.error('Error loading dashboard:', error);
+        }
+    }
+
+    function updateOverview(data) {
+        const summary = data.summary || {};
+        document.getElementById('summaryDistricts').textContent = summary.districts_mapped || 0;
+        document.getElementById('summaryCoverage').textContent = (summary.current_coverage || 0) + '%';
+        document.getElementById('summaryVolunteers').textContent = summary.volunteers || 0;
+        document.getElementById('summaryReports').textContent = summary.reports_today || 0;
+        
+        // Update status list
+        const statusList = document.getElementById('statusList');
+        if (statusList) {
+            statusList.innerHTML = `
+                <div class="status-item">Districts: <strong>${summary.districts_mapped || 0}</strong></div>
+                <div class="status-item">Coverage: <strong>${summary.current_coverage || 0}%</strong></div>
+                <div class="status-item">Volunteers: <strong>${summary.volunteers || 0}</strong></div>
+                <div class="status-item">Reports Today: <strong>${summary.reports_today || 0}</strong></div>
+                <div class="status-item">Donations Today: <strong>${summary.donations_today || 0}</strong></div>
+                <div class="status-item">Deployed Today: <strong>${summary.deployed_today || 0}</strong></div>
+            `;
+        }
+    }
+
+    function updateAggregate(data) {
+        const sources = data.sources || [];
+        const sourceGrid = document.getElementById('sourceGrid');
+        if (sourceGrid) {
+            if (sources.length === 0) {
+                sourceGrid.innerHTML = '<p class="empty-message">No data sources connected yet.</p>';
+            } else {
+                sourceGrid.innerHTML = sources.map(source => `
+                    <div class="source-card">
+                        <strong>${source.name}</strong>
+                        <p>${source.description || 'No description'}</p>
+                        <span class="source-records">${source.records} records</span>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        const recordsSummary = document.getElementById('recordsSummary');
+        if (recordsSummary) {
+            recordsSummary.innerHTML = `Total records consolidated: <strong>${data.summary?.records_consolidated || 0}</strong> from <strong>${sources.length}</strong> source(s)`;
+        }
+    }
+
+    function updateAllocation(data) {
+        const regions = data.allocations || data.regions || [];
+        const tbody = document.getElementById('allocationTableBody');
+        if (tbody) {
+            if (regions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5">No allocation data available.</td></tr>';
+            } else {
+                tbody.innerHTML = regions.map(region => `
+                    <tr>
+                        <td>${region.name}</td>
+                        <td>${region.needs}</td>
+                        <td>${region.volunteers}</td>
+                        <td>${region.deficit}</td>
+                        <td><span class="severity-${region.severity}">${region.action_label || region.severity_label}</span></td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        const recommendation = document.getElementById('allocationRecommendation');
+        if (recommendation) {
+            const criticalCount = regions.filter(r => r.severity === 'critical').length;
+            if (criticalCount > 0) {
+                recommendation.innerHTML = `<strong>${criticalCount}</strong> region(s) require immediate attention. Priority deployment recommended.`;
+            } else {
+                recommendation.innerHTML = 'All regions are within manageable thresholds.';
+            }
+        }
+    }
+
+    function updateImpact(data) {
+        const metrics = data.impact_metrics || [];
+        const tbody = document.getElementById('impactTableBody');
+        if (tbody) {
+            if (metrics.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">No impact data available.</td></tr>';
+            } else {
+                tbody.innerHTML = metrics.map(metric => `
+                    <tr>
+                        <td>${metric.metric}</td>
+                        <td>${metric.before}</td>
+                        <td>${metric.after}</td>
+                        <td class="improvement-cell">${metric.improvement}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        const insights = document.getElementById('heatmapInsights');
+        if (insights) {
+            insights.innerHTML = `<strong>Impact Summary:</strong> The dashboard shows measurable improvements across ${metrics.length} key metrics since baseline. Keep monitoring critical regions for sustained progress.`;
+        }
+    }
+
+    function updateActivityFeed(data) {
+        const activities = data.activities || [];
+        const feed = document.getElementById('activityFeed');
+        if (feed) {
+            if (activities.length === 0) {
+                feed.innerHTML = '<p class="empty-message">No recent activity.</p>';
+            } else {
+                feed.innerHTML = activities.map(activity => `
+                    <div class="activity-item">
+                        <strong>${activity.title}</strong>
+                        <p>${activity.detail}</p>
+                        <span class="activity-time">${activity.display_time}</span>
+                    </div>
+                `).join('');
+            }
+        }
+    }
+
+    function updateBenefits(data) {
+        const benefits = data.benefits || [];
+        const list = document.getElementById('benefitsList');
+        if (list) {
+            if (benefits.length === 0) {
+                list.innerHTML = '<p class="empty-message">No benefits data available.</p>';
+            } else {
+                list.innerHTML = benefits.map(benefit => `
+                    <div class="benefit-item">
+                        <strong>${benefit.title || 'Benefit'}</strong>
+                        <p>${benefit.description || ''}</p>
+                    </div>
+                `).join('');
+            }
+        }
+    }
+    </script>
 </body>
 </html>
